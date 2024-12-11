@@ -3,6 +3,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
+  static String get routeName => '/login';
 
   @override
   Widget build(BuildContext context) {
