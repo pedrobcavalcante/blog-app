@@ -1,8 +1,8 @@
 import 'package:blog/core/config/config.dart';
 import 'package:blog/data/datasources/remote_datasource_impl.dart';
-import 'package:blog/modules/splash/presentation/screens/splash_screen.dart';
+import 'package:blog/modules/splash/presentation/screen/splash_screen.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:blog/login_screen.dart';
+import 'package:blog/modules/login/presentation/screen/login_screen.dart';
 import 'package:blog/domain/usecases/get_posts_usecase.dart';
 import 'package:blog/core/network/http_client.dart';
 
