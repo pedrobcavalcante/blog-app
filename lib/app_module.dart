@@ -1,8 +1,10 @@
 import 'package:blog/core/config/config.dart';
 import 'package:blog/data/datasources/remote_datasource_impl.dart';
-import 'package:blog/modules/splash/presentation/screen/splash_screen.dart';
-import 'package:flutter_modular/flutter_modular.dart';
+import 'package:blog/modules/login/presentation/bloc/login_bloc.dart';
 import 'package:blog/modules/login/presentation/screen/login_screen.dart';
+import 'package:blog/modules/splash/presentation/screen/splash_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:blog/domain/usecases/get_posts_usecase.dart';
 import 'package:blog/core/network/http_client.dart';
 
@@ -15,6 +17,8 @@ class AppModule extends Module {
         () => PostRemoteDataSourceImpl(client: i()));
     i.addLazySingleton<GetPostsUseCase>(
         () => GetPostsUseCase(postRemoteDataSource: i()));
+    i.addLazySingleton<FirebaseAuth>(() => FirebaseAuth.instance);
+    i.addLazySingleton<LoginBloc>(() => LoginBloc(i()));
   }
 
   @override

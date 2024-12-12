@@ -7,7 +7,12 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp();
-  runApp(ModularApp(module: AppModule(), child: const MyApp()));
+  runApp(
+    ModularApp(
+      module: AppModule(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -16,6 +21,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Blog App',
       theme: ThemeData(
         primarySwatch: Colors.blue,
