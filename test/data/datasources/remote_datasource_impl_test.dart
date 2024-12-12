@@ -1,6 +1,6 @@
 import 'package:blog/core/network/interface/http_client_interface.dart';
-import 'package:blog/data/datasources/remote_datasource_impl.dart';
-import 'package:blog/domain/entities/post.dart';
+import 'package:blog/core/data/datasources/remote_datasource_impl.dart';
+import 'package:blog/core/domain/entities/post.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:dio/dio.dart';

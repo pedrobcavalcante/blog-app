@@ -91,11 +91,8 @@ class LoginScreen extends StatelessWidget {
                             BlocConsumer<LoginBloc, LoginState>(
                               listener: (context, state) {
                                 if (state is LoginSuccess) {
-                                  Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const HomeScreen()),
+                                  Modular.to.pushReplacementNamed(
+                                    HomeScreen.routeName,
                                   );
                                 }
                               },

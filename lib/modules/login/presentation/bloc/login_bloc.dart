@@ -1,12 +1,17 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:blog/modules/login/domain/usecase/login_usecase.dart';
+import 'package:blog/modules/login/domain/usecase/save_secure_storage_usecase.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'login_event.dart';
 import 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  final FirebaseAuth _firebaseAuth;
+  final LoginUseCase loginUseCase;
+  final SaveSecureStorageUseCase saveSecureStorageUseCase;
 
-  LoginBloc(this._firebaseAuth) : super(LoginInitial()) {
+  LoginBloc(
+      {required this.loginUseCase, required this.saveSecureStorageUseCase})
+      : super(LoginInitial()) {
     on<LoginRequested>(_onLoginRequested);
   }
 
@@ -15,10 +20,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     emit(LoginInProgress());
 
     try {
-      await _firebaseAuth.signInWithEmailAndPassword(
+      final userCredential = await loginUseCase.call(LoginParams(
         email: event.email,
         password: event.password,
-      );
+      ));
+      await saveSecureStorageUseCase.call(userCredential!.user!.uid);
       emit(LoginSuccess());
     } on FirebaseAuthException catch (e) {
       emit(LoginFailure(errorMessage: _getErrorMessage(e.code)));
