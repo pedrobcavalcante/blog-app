@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'splash_event.dart';
 import 'splash_state.dart';
 
@@ -18,11 +17,7 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
       if (timeElapsed < duration.inMilliseconds) {
         await Future.delayed(duration - Duration(milliseconds: timeElapsed));
       }
-      if (true) {
-        emit(SplashUnauthenticated());
-      } else {
-        emit(SplashAuthenticated());
-      }
+      emit(SplashUnauthenticated());
     });
   }
 }
