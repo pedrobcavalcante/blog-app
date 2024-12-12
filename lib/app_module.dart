@@ -1,5 +1,8 @@
 import 'package:blog/core/config/config.dart';
-import 'package:blog/core/data/datasources/remote_datasource_impl.dart';
+import 'package:blog/core/network/interface/http_client_interface.dart';
+import 'package:blog/modules/home/data/datasources/interface/remote_datasource.dart';
+import 'package:blog/modules/home/data/datasources/remote_datasource_impl.dart';
+import 'package:blog/modules/home/presentation/bloc/post_bloc.dart';
 import 'package:blog/modules/home/presentation/screen/home_screen.dart';
 import 'package:blog/modules/login/domain/usecase/save_secure_storage_usecase.dart';
 import 'package:blog/modules/login/presentation/bloc/login_bloc.dart';
@@ -10,10 +13,9 @@ import 'package:blog/modules/splash/presentation/screen/splash_screen.dart';
 import 'package:blog/shared/data/datasource/secure_storage_datasource.dart';
 import 'package:blog/shared/domain/datasource/firebase_auth_datasource.dart';
 import 'package:blog/shared/domain/datasource/secure_storage_datasource.dart';
-import 'package:blog/shared/domain/usecases/usecase.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:blog/core/domain/usecases/get_posts_usecase.dart';
+import 'package:blog/modules/home/domain/usecases/get_posts_usecase.dart';
 import 'package:blog/core/network/http_client.dart';
 import 'package:blog/modules/login/domain/usecase/login_usecase.dart';
 import 'package:blog/shared/data/datasource/firebase_auth_datasource.dart';
@@ -23,7 +25,7 @@ class AppModule extends Module {
   @override
   void binds(Injector i) {
     // Network
-    i.addLazySingleton<HttpClient>(
+    i.addLazySingleton<HttpClientInterface>(
         () => HttpClient(baseUrl: Config.apiBaseUrl));
 
     // Firebase
@@ -34,7 +36,7 @@ class AppModule extends Module {
         () => const FlutterSecureStorage());
 
     // Data sources
-    i.addLazySingleton<PostRemoteDataSourceImpl>(
+    i.addLazySingleton<PostRemoteDataSource>(
         () => PostRemoteDataSourceImpl(client: i()));
     i.addLazySingleton<FirebaseAuthDatasource>(
         () => FirebaseAuthDatasourceImpl(firebaseAuth: i()));
@@ -55,6 +57,7 @@ class AppModule extends Module {
         () => LoginBloc(loginUseCase: i(), saveSecureStorageUseCase: i()));
     i.addLazySingleton<SplashBloc>(
         () => SplashBloc(getSecureStorageUseCase: i()));
+    i.addLazySingleton<PostBloc>(() => PostBloc(getPostsUseCase: i()));
   }
 
   @override
@@ -64,3 +67,4 @@ class AppModule extends Module {
     r.child(HomeScreen.routeName, child: (context) => const HomeScreen());
   }
 }
+

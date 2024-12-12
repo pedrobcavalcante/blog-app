@@ -14,9 +14,9 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _formKey = GlobalKey<FormState>();
-    final _emailController = TextEditingController();
-    final _passwordController = TextEditingController();
+    final formKey = GlobalKey<FormState>();
+    final emailController = TextEditingController();
+    final passwordController = TextEditingController();
 
     return BlocProvider(
       create: (context) => Modular.get<LoginBloc>(),
@@ -62,11 +62,11 @@ class LoginScreen extends StatelessWidget {
                     child: Container(
                       padding: const EdgeInsets.all(16.0),
                       child: Form(
-                        key: _formKey,
+                        key: formKey,
                         child: Column(
                           children: [
                             LoginTextField(
-                              controller: _emailController,
+                              controller: emailController,
                               hintText: "E-mail",
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
@@ -78,7 +78,7 @@ class LoginScreen extends StatelessWidget {
                             const SizedBox(height: 20),
                             LoginTextField(
                               hintText: "Senha",
-                              controller: _passwordController,
+                              controller: passwordController,
                               isPassword: true,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
@@ -104,12 +104,12 @@ class LoginScreen extends StatelessWidget {
                                   children: [
                                     LoginButton(
                                       onPressed: () {
-                                        if (_formKey.currentState!.validate()) {
+                                        if (formKey.currentState!.validate()) {
                                           Modular.get<LoginBloc>().add(
                                             LoginRequested(
-                                              email: _emailController.text,
+                                              email: emailController.text,
                                               password:
-                                                  _passwordController.text,
+                                                  passwordController.text,
                                             ),
                                           );
                                         }
