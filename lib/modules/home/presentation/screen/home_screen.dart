@@ -1,3 +1,4 @@
+import 'package:blog/modules/app_drawer/presentation/screen/app_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:blog/modules/home/presentation/bloc/post_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -21,7 +22,18 @@ class HomeScreen extends StatelessWidget {
         ),
         backgroundColor: Colors.blueAccent,
         elevation: 0,
+        leading: Builder(
+          builder: (BuildContext context) {
+            return IconButton(
+              icon: const Icon(Icons.account_circle, color: Colors.white),
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+            );
+          },
+        ),
       ),
+      drawer: const AppDrawer(),
       body: BlocProvider(
         create: (context) => Modular.get<PostBloc>()..add(LoadPostsEvent()),
         child: BlocBuilder<PostBloc, PostState>(
@@ -80,9 +92,6 @@ class HomeScreen extends StatelessWidget {
                               style: const TextStyle(fontSize: 14),
                             ),
                             tileColor: const Color(0xFFF5F5F5),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16),
-                            ),
                           ),
                         ),
                       ),
