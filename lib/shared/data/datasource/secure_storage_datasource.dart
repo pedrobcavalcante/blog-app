@@ -16,4 +16,9 @@ class SecureStorageDatasourceImpl implements SecureStorageDatasource {
   Future<String?> getToken() async {
     return await _secureStorage.read(key: _tokenKey);
   }
+  
+  @override
+  Future<void> deleteToken() async {
+    await _secureStorage.delete(key: _tokenKey);
+  }
 }

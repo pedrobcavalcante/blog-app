@@ -17,9 +17,9 @@ class LoginScreen extends StatelessWidget {
     final formKey = GlobalKey<FormState>();
     final emailController = TextEditingController();
     final passwordController = TextEditingController();
-
+    final bloc = Modular.get<LoginBloc>();
     return BlocProvider(
-      create: (context) => Modular.get<LoginBloc>(),
+      create: (context) => bloc,
       child: Scaffold(
         backgroundColor: Colors.blue,
         body: Column(
@@ -105,11 +105,10 @@ class LoginScreen extends StatelessWidget {
                                     LoginButton(
                                       onPressed: () {
                                         if (formKey.currentState!.validate()) {
-                                          Modular.get<LoginBloc>().add(
+                                          bloc.add(
                                             LoginRequested(
                                               email: emailController.text,
-                                              password:
-                                                  passwordController.text,
+                                              password: passwordController.text,
                                             ),
                                           );
                                         }
