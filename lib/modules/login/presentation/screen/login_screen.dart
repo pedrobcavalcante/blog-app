@@ -15,8 +15,8 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final formKey = GlobalKey<FormState>();
-    final emailController = TextEditingController();
-    final passwordController = TextEditingController();
+    final emailController = TextEditingController(text: 'teste@email.com');
+    final passwordController = TextEditingController(text: '12345678');
     final bloc = Modular.get<LoginBloc>();
     return BlocProvider(
       create: (context) => bloc,
@@ -91,7 +91,7 @@ class LoginScreen extends StatelessWidget {
                             BlocConsumer<LoginBloc, LoginState>(
                               listener: (context, state) {
                                 if (state is LoginSuccess) {
-                                  Modular.to.pushReplacementNamed(
+                                  Modular.to.pushNamed(
                                     HomeScreen.routeName,
                                   );
                                 }

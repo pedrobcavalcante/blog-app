@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:blog/modules/app_drawer/presentation/bloc/drawer_bloc.dart';
 import 'package:blog/modules/app_drawer/presentation/bloc/drawer_event.dart';
 import 'package:blog/modules/app_drawer/presentation/bloc/drawer_state.dart';
@@ -40,9 +42,9 @@ class AppDrawer extends StatelessWidget {
               ),
               const Spacer(),
               BlocConsumer<DrawerBloc, DrawerState>(
-                listener: (context, state) {
+                listener: (context, state) async {
                   if (state is DeleteTokenSuccess) {
-                    Modular.to.popAndPushNamed(LoginScreen.routeName);
+                    await Modular.to.pushNamed(LoginScreen.routeName);
                   }
                   if (state is DeleteTokenFailure) {
                     Scaffold.of(context).closeDrawer();

@@ -47,57 +47,62 @@ class HomeScreen extends StatelessWidget {
             }
 
             if (state is PostLoaded) {
-              return ListView.builder(
-                padding: const EdgeInsets.all(8),
-                itemCount: state.posts.length,
-                itemBuilder: (context, index) {
-                  final post = state.posts[index];
+              return RefreshIndicator(
+                onRefresh: () async {
+                  Modular.get<PostBloc>().add(LoadPostsEvent());
+                },
+                child: ListView.builder(
+                  padding: const EdgeInsets.all(8),
+                  itemCount: state.posts.length,
+                  itemBuilder: (context, index) {
+                    final post = state.posts[index];
 
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => PostDetail(
-                            post: post,
-                            future:
-                                Modular.get<PostBloc>().getComments(post.id),
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => PostDetail(
+                              post: post,
+                              future:
+                                  Modular.get<PostBloc>().getComments(post.id),
+                            ),
                           ),
-                        ),
-                      );
-                    },
-                    child: Hero(
-                      tag: 'post-${post.id}',
-                      child: Material(
-                        color: Colors.transparent,
-                        child: Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          elevation: 4,
-                          margin: const EdgeInsets.symmetric(vertical: 8),
-                          child: ListTile(
-                            contentPadding: const EdgeInsets.all(16),
-                            title: Text(
-                              post.title,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
+                        );
+                      },
+                      child: Hero(
+                        tag: 'post-${post.id}',
+                        child: Material(
+                          color: Colors.transparent,
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            elevation: 4,
+                            margin: const EdgeInsets.symmetric(vertical: 8),
+                            child: ListTile(
+                              contentPadding: const EdgeInsets.all(16),
+                              title: Text(
+                                post.title,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
+                                ),
                               ),
+                              subtitle: Text(
+                                post.body,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(fontSize: 14),
+                              ),
+                              tileColor: const Color(0xFFF5F5F5),
                             ),
-                            subtitle: Text(
-                              post.body,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(fontSize: 14),
-                            ),
-                            tileColor: const Color(0xFFF5F5F5),
                           ),
                         ),
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               );
             }
 
