@@ -6,10 +6,10 @@ import 'splash_event.dart';
 import 'splash_state.dart';
 
 class SplashBloc extends Bloc<SplashEvent, SplashState> {
-  final GetSecureStorageUseCase _getSecureStorageUseCase;
+  final GetTokenUseCase _getSecureStorageUseCase;
   final duration = const Duration(seconds: 3);
 
-  SplashBloc({required GetSecureStorageUseCase getSecureStorageUseCase})
+  SplashBloc({required GetTokenUseCase getSecureStorageUseCase})
       : _getSecureStorageUseCase = getSecureStorageUseCase,
         super(SplashInitial()) {
     on<CheckAuthentication>((event, emit) async {

@@ -1,4 +1,5 @@
 import 'package:blog/core/config/config.dart';
+import 'package:blog/core/guards/auth_guard.dart';
 import 'package:blog/core/network/interface/http_client_interface.dart';
 import 'package:blog/modules/app_drawer/domain/usecases/delete_token_usecase.dart';
 import 'package:blog/modules/app_drawer/presentation/bloc/drawer_bloc.dart';
@@ -49,8 +50,8 @@ class AppModule extends Module {
     // Use cases
     i.addLazySingleton<GetPostsUseCase>(() => GetPostsUseCase(datasource: i()));
     i.addLazySingleton<LoginUseCase>(() => LoginUseCase(datasource: i()));
-    i.addLazySingleton<GetSecureStorageUseCase>(
-        () => GetSecureStorageUseCase(i()));
+    i.addLazySingleton<GetTokenUseCase>(
+        () => GetTokenUseCase(i()));
     i.addLazySingleton<SaveSecureStorageUseCase>(
         () => SaveSecureStorageUseCase(i()));
     i.addLazySingleton<GetCommentsUseCase>(
@@ -71,6 +72,7 @@ class AppModule extends Module {
   void routes(RouteManager r) {
     r.child(Modular.initialRoute, child: (context) => const SplashScreen());
     r.child(LoginScreen.routeName, child: (context) => const LoginScreen());
-    r.child(HomeScreen.routeName, child: (context) => const HomeScreen());
+    r.child(HomeScreen.routeName,
+        child: (context) => const HomeScreen(), guards: [AuthGuard()]);
   }
 }
