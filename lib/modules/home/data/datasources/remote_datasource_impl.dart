@@ -1,5 +1,6 @@
 import 'package:blog/core/network/interface/http_client_interface.dart';
 import 'package:blog/modules/home/data/datasources/interface/remote_datasource.dart';
+import 'package:blog/modules/home/domain/entities/comments.dart';
 import 'package:blog/modules/home/domain/entities/post.dart';
 
 class PostRemoteDataSourceImpl implements PostRemoteDataSource {
@@ -25,6 +26,17 @@ class PostRemoteDataSourceImpl implements PostRemoteDataSource {
       return Post.fromJson(response.data);
     } catch (e) {
       throw Exception('Failed to fetch post');
+    }
+  }
+
+  @override
+  Future<List<Comment>> getCommentsByPostId(int postId) async {
+    try {
+      final response = await client.get('/comments?postId=$postId');
+      final List<dynamic> json = response.data;
+      return json.map((comment) => Comment.fromJson(comment)).toList();
+    } catch (e) {
+      throw Exception('Failed to fetch comments');
     }
   }
 }

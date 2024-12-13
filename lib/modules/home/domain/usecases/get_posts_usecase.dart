@@ -3,12 +3,12 @@ import 'package:blog/modules/home/domain/entities/post.dart';
 import 'package:blog/shared/domain/usecases/usecase.dart';
 
 class GetPostsUseCase implements UseCase<List<Post>, void> {
-  final PostRemoteDataSource postRemoteDataSource;
+  final PostRemoteDataSource datasource;
 
-  GetPostsUseCase({required this.postRemoteDataSource});
+  GetPostsUseCase({required this.datasource});
 
   @override
   Future<List<Post>> call([void input]) async {
-    return await postRemoteDataSource.getPosts();
+    return await datasource.getPosts();
   }
 }

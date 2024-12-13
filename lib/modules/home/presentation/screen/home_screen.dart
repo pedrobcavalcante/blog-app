@@ -1,9 +1,9 @@
+import 'package:blog/modules/home/presentation/bloc/post_event.dart';
+import 'package:blog/modules/home/presentation/bloc/post_state.dart';
 import 'package:blog/modules/home/presentation/widgets/post_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:blog/modules/home/presentation/bloc/post_bloc.dart';
-import 'package:blog/modules/home/presentation/bloc/post_event.dart';
-import 'package:blog/modules/home/presentation/bloc/post_state.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -13,9 +13,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Página Principal'),
-      ),
+      appBar: AppBar(title: const Text('Posts')),
       body: BlocProvider(
         create: (context) => Modular.get<PostBloc>()..add(LoadPostsEvent()),
         child: BlocBuilder<PostBloc, PostState>(
@@ -33,17 +31,30 @@ class HomeScreen extends StatelessWidget {
                 itemCount: state.posts.length,
                 itemBuilder: (context, index) {
                   final post = state.posts[index];
-                  return ListTile(
-                    title: Text(post.title),
-                    subtitle: Text(post.body),
+
+                  return GestureDetector(
                     onTap: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => PostDetail(post: post),
+                          builder: (context) => PostDetail(
+                            post: post,
+                            future:
+                                Modular.get<PostBloc>().getComments(post.id),
+                          ),
                         ),
                       );
                     },
+                    child: Hero(
+                      tag: 'post-${post.id}',
+                      child: Material(
+                        color: Colors.transparent,
+                        child: ListTile(
+                          title: Text(post.title),
+                          subtitle: Text(post.body),
+                        ),
+                      ),
+                    ),
                   );
                 },
               );

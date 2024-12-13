@@ -2,6 +2,7 @@ import 'package:blog/core/config/config.dart';
 import 'package:blog/core/network/interface/http_client_interface.dart';
 import 'package:blog/modules/home/data/datasources/interface/remote_datasource.dart';
 import 'package:blog/modules/home/data/datasources/remote_datasource_impl.dart';
+import 'package:blog/modules/home/domain/usecases/get_comments_usecas.dart';
 import 'package:blog/modules/home/presentation/bloc/post_bloc.dart';
 import 'package:blog/modules/home/presentation/screen/home_screen.dart';
 import 'package:blog/modules/login/domain/usecase/save_secure_storage_usecase.dart';
@@ -45,19 +46,22 @@ class AppModule extends Module {
 
     // Use cases
     i.addLazySingleton<GetPostsUseCase>(
-        () => GetPostsUseCase(postRemoteDataSource: i()));
+        () => GetPostsUseCase(datasource: i()));
     i.addLazySingleton<LoginUseCase>(() => LoginUseCase(datasource: i()));
     i.addLazySingleton<GetSecureStorageUseCase>(
         () => GetSecureStorageUseCase(i()));
     i.addLazySingleton<SaveSecureStorageUseCase>(
         () => SaveSecureStorageUseCase(i()));
+    i.addLazySingleton<GetCommentsUseCase>(
+        () => GetCommentsUseCase(datasource: i()));
 
     // Blocs
     i.addLazySingleton<LoginBloc>(
         () => LoginBloc(loginUseCase: i(), saveSecureStorageUseCase: i()));
     i.addLazySingleton<SplashBloc>(
         () => SplashBloc(getSecureStorageUseCase: i()));
-    i.addLazySingleton<PostBloc>(() => PostBloc(getPostsUseCase: i()));
+    i.addLazySingleton<PostBloc>(
+        () => PostBloc(getPostsUseCase: i(), getCommentsUseCase: i()));
   }
 
   @override
@@ -67,4 +71,3 @@ class AppModule extends Module {
     r.child(HomeScreen.routeName, child: (context) => const HomeScreen());
   }
 }
-
