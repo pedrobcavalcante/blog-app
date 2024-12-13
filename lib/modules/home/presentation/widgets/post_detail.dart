@@ -11,9 +11,18 @@ class PostDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFFF5F5F5),
       appBar: AppBar(
-        title: const Text("Comentários"),
-        backgroundColor: Colors.white,
+        centerTitle: true,
+        title: const Text(
+          "Comentários",
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.blueAccent,
+        iconTheme: const IconThemeData(
+          color: Colors.white,
+        ),
+        foregroundColor: Colors.white,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -23,16 +32,26 @@ class PostDetail extends StatelessWidget {
             Hero(
               tag: 'post-${post.id}',
               child: Material(
-                color: Colors.transparent,
-                child: Text(
-                  post.title,
-                  style: const TextStyle(
-                      fontSize: 24, fontWeight: FontWeight.bold),
+                child: Container(
+                  color: const Color(0xFFF5F5F5),
+                  child: Text(
+                    post.title,
+                    style: const TextStyle(
+                      fontSize: 26,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
               ),
             ),
             const SizedBox(height: 16),
-            Text(post.body),
+            Text(
+              post.body,
+              style: TextStyle(
+                fontSize: 18,
+                color: Colors.blueGrey[800],
+              ),
+            ),
             const SizedBox(height: 16),
             Expanded(
               child: FutureBuilder<List<Comment>>(
@@ -55,7 +74,11 @@ class PostDetail extends StatelessWidget {
                       itemBuilder: (context, index) {
                         final comment = comments[index];
                         return Card(
+                          elevation: 4,
                           margin: const EdgeInsets.only(bottom: 8.0),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Column(
@@ -64,10 +87,17 @@ class PostDetail extends StatelessWidget {
                                 Text(
                                   comment.name,
                                   style: const TextStyle(
-                                      fontWeight: FontWeight.bold),
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.blueAccent,
+                                  ),
                                 ),
                                 const SizedBox(height: 4),
-                                Text(comment.email),
+                                Text(
+                                  comment.email,
+                                  style: TextStyle(
+                                    color: Colors.blueGrey[600],
+                                  ),
+                                ),
                                 const SizedBox(height: 8),
                                 Text(comment.body),
                               ],

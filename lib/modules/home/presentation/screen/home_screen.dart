@@ -1,10 +1,10 @@
+import 'package:flutter/material.dart';
+import 'package:blog/modules/home/presentation/bloc/post_bloc.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:blog/modules/home/presentation/bloc/post_event.dart';
 import 'package:blog/modules/home/presentation/bloc/post_state.dart';
 import 'package:blog/modules/home/presentation/widgets/post_detail.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:blog/modules/home/presentation/bloc/post_bloc.dart';
-import 'package:flutter_modular/flutter_modular.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -13,7 +13,15 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Posts')),
+      appBar: AppBar(
+        centerTitle: true,
+        title: const Text(
+          'Posts',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.blueAccent,
+        elevation: 0,
+      ),
       body: BlocProvider(
         create: (context) => Modular.get<PostBloc>()..add(LoadPostsEvent()),
         child: BlocBuilder<PostBloc, PostState>(
@@ -28,6 +36,7 @@ class HomeScreen extends StatelessWidget {
 
             if (state is PostLoaded) {
               return ListView.builder(
+                padding: const EdgeInsets.all(8),
                 itemCount: state.posts.length,
                 itemBuilder: (context, index) {
                   final post = state.posts[index];
@@ -49,9 +58,32 @@ class HomeScreen extends StatelessWidget {
                       tag: 'post-${post.id}',
                       child: Material(
                         color: Colors.transparent,
-                        child: ListTile(
-                          title: Text(post.title),
-                          subtitle: Text(post.body),
+                        child: Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          elevation: 4,
+                          margin: const EdgeInsets.symmetric(vertical: 8),
+                          child: ListTile(
+                            contentPadding: const EdgeInsets.all(16),
+                            title: Text(
+                              post.title,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
+                            ),
+                            subtitle: Text(
+                              post.body,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(fontSize: 14),
+                            ),
+                            tileColor: const Color(0xFFF5F5F5),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                          ),
                         ),
                       ),
                     ),
