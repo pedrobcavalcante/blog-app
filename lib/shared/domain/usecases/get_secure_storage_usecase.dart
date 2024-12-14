@@ -1,5 +1,5 @@
 import 'package:blog/shared/domain/datasource/secure_storage_datasource.dart';
-import 'package:blog/shared/domain/usecases/usecase.dart';
+import 'package:blog/core/domain/usecases/usecase.dart';
 
 class GetTokenUseCase implements UseCase<void, String?> {
   final SecureStorageDatasource _secureStorageDatasource;

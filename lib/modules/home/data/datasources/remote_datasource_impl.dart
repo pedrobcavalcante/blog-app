@@ -1,5 +1,5 @@
 import 'package:blog/core/network/interface/http_client_interface.dart';
-import 'package:blog/modules/home/data/datasources/interface/remote_datasource.dart';
+import 'package:blog/modules/home/domain/datasources/remote_datasource.dart';
 import 'package:blog/modules/home/domain/entities/comments.dart';
 import 'package:blog/modules/home/domain/entities/post.dart';
 

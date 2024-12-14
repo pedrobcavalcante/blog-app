@@ -1,6 +1,6 @@
-import 'package:blog/modules/home/data/datasources/interface/remote_datasource.dart';
+import 'package:blog/modules/home/domain/datasources/remote_datasource.dart';
 import 'package:blog/modules/home/domain/entities/post.dart';
-import 'package:blog/shared/domain/usecases/usecase.dart';
+import 'package:blog/core/domain/usecases/usecase.dart';
 
 class GetPostByIdUseCase implements UseCase<int, Post> {
   final PostRemoteDataSource postRemoteDataSource;

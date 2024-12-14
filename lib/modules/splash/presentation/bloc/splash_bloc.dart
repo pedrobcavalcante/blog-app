@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:blog/modules/splash/domain/usecase/get_secure_storage_usecase.dart';
+import 'package:blog/shared/domain/usecases/get_secure_storage_usecase.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'splash_event.dart';

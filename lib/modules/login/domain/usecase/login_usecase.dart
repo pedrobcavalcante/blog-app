@@ -1,6 +1,6 @@
 import 'package:blog/shared/domain/datasource/firebase_auth_datasource.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:blog/shared/domain/usecases/usecase.dart';
+import 'package:blog/core/domain/usecases/usecase.dart';
 
 class LoginParams {
   final String email;

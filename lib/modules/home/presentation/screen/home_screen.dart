@@ -1,11 +1,12 @@
 import 'package:blog/modules/app_drawer/presentation/screen/app_drawer.dart';
-import 'package:flutter/material.dart';
-import 'package:blog/modules/home/presentation/bloc/post_bloc.dart';
-import 'package:flutter_modular/flutter_modular.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:blog/modules/home/presentation/bloc/post_event.dart';
 import 'package:blog/modules/home/presentation/bloc/post_state.dart';
+import 'package:blog/modules/home/presentation/widgets/favorite_button.dart';
+import 'package:blog/modules/home/presentation/bloc/post_bloc.dart';
 import 'package:blog/modules/home/presentation/widgets/post_detail.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -82,17 +83,32 @@ class HomeScreen extends StatelessWidget {
                             margin: const EdgeInsets.symmetric(vertical: 8),
                             child: ListTile(
                               contentPadding: const EdgeInsets.all(16),
-                              title: Text(
-                                post.title,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18,
-                                ),
+                              title: Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      post.title,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18,
+                                      ),
+                                      maxLines: 3,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                  FavoriteButton(
+                                    isFavorited: post.isFavorited,
+                                    onToggleFavorite: () {
+                                      Modular.get<PostBloc>().add(
+                                          ToggleFavoritePostEvent(
+                                              isFavorited: !post.isFavorited,
+                                              postId: post.id));
+                                    },
+                                  ),
+                                ],
                               ),
                               subtitle: Text(
                                 post.body,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
                                 style: const TextStyle(fontSize: 14),
                               ),
                               tileColor: const Color(0xFFF5F5F5),
