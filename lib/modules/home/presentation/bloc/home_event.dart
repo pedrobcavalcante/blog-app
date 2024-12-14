@@ -1,8 +1,8 @@
-abstract class PostEvent {}
+abstract class HomeEvent {}
 
-class LoadPostsEvent extends PostEvent {}
+class LoadPostsEvent extends HomeEvent {}
 
-class ToggleFavoritePostEvent extends PostEvent {
+class ToggleFavoritePostEvent extends HomeEvent {
   final int postId;
   final bool isFavorited;
 

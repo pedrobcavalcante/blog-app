@@ -1,8 +1,8 @@
 import 'package:blog/modules/app_drawer/presentation/screen/app_drawer.dart';
-import 'package:blog/modules/home/presentation/bloc/post_event.dart';
-import 'package:blog/modules/home/presentation/bloc/post_state.dart';
+import 'package:blog/modules/home/presentation/bloc/home_event.dart';
+import 'package:blog/modules/home/presentation/bloc/home_state.dart';
 import 'package:blog/modules/home/presentation/widgets/favorite_button.dart';
-import 'package:blog/modules/home/presentation/bloc/post_bloc.dart';
+import 'package:blog/modules/home/presentation/bloc/home_bloc.dart';
 import 'package:blog/modules/home/presentation/widgets/post_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -36,21 +36,21 @@ class HomeScreen extends StatelessWidget {
       ),
       drawer: const AppDrawer(),
       body: BlocProvider(
-        create: (context) => Modular.get<PostBloc>()..add(LoadPostsEvent()),
-        child: BlocBuilder<PostBloc, PostState>(
+        create: (context) => Modular.get<HomeBloc>()..add(LoadPostsEvent()),
+        child: BlocBuilder<HomeBloc, HomeState>(
           builder: (context, state) {
-            if (state is PostLoading) {
+            if (state is HomeLoading) {
               return const Center(child: CircularProgressIndicator());
             }
 
-            if (state is PostError) {
+            if (state is HomeError) {
               return Center(child: Text(state.message));
             }
 
-            if (state is PostLoaded) {
+            if (state is HomeLoaded) {
               return RefreshIndicator(
                 onRefresh: () async {
-                  Modular.get<PostBloc>().add(LoadPostsEvent());
+                  Modular.get<HomeBloc>().add(LoadPostsEvent());
                 },
                 child: ListView.builder(
                   padding: const EdgeInsets.all(8),
@@ -66,7 +66,7 @@ class HomeScreen extends StatelessWidget {
                             builder: (context) => PostDetail(
                               post: post,
                               future:
-                                  Modular.get<PostBloc>().getComments(post.id),
+                                  Modular.get<HomeBloc>().getComments(post.id),
                             ),
                           ),
                         );
@@ -99,7 +99,7 @@ class HomeScreen extends StatelessWidget {
                                   FavoriteButton(
                                     isFavorited: post.isFavorited,
                                     onToggleFavorite: () {
-                                      Modular.get<PostBloc>().add(
+                                      Modular.get<HomeBloc>().add(
                                           ToggleFavoritePostEvent(
                                               isFavorited: !post.isFavorited,
                                               postId: post.id));

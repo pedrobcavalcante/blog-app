@@ -17,7 +17,7 @@ import 'package:blog/modules/home/domain/usecases/get_posts_usecase.dart';
 import 'package:blog/modules/home/domain/usecases/get_posts_with_favorites_usecase.dart';
 import 'package:blog/modules/home/domain/usecases/is_post_favorited_usecase.dart';
 import 'package:blog/modules/home/domain/usecases/toggle_favorite_post_usecase.dart';
-import 'package:blog/modules/home/presentation/bloc/post_bloc.dart';
+import 'package:blog/modules/home/presentation/bloc/home_bloc.dart';
 import 'package:blog/modules/home/presentation/screen/home_screen.dart';
 import 'package:blog/modules/login/domain/usecase/save_secure_storage_usecase.dart';
 import 'package:blog/modules/login/presentation/bloc/login_bloc.dart';
@@ -94,8 +94,8 @@ class AppModule extends Module {
         () => LoginBloc(loginUseCase: i(), saveSecureStorageUseCase: i()));
     i.addLazySingleton<SplashBloc>(
         () => SplashBloc(getSecureStorageUseCase: i()));
-    i.addLazySingleton<PostBloc>(
-      () => PostBloc(
+    i.addLazySingleton<HomeBloc>(
+      () => HomeBloc(
         getCommentsUseCase: i(),
         toggleFavoritePostUseCase: i(),
         getPostsWithFavoritesUseCase: i(),

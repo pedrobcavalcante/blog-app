@@ -2,36 +2,36 @@ import 'package:blog/modules/home/domain/entities/comments.dart';
 import 'package:blog/modules/home/domain/usecases/get_comments_usecas.dart';
 import 'package:blog/modules/home/domain/usecases/get_posts_with_favorites_usecase.dart';
 import 'package:blog/modules/home/domain/usecases/toggle_favorite_post_usecase.dart';
-import 'package:blog/modules/home/presentation/bloc/post_event.dart';
-import 'package:blog/modules/home/presentation/bloc/post_state.dart';
+import 'package:blog/modules/home/presentation/bloc/home_event.dart';
+import 'package:blog/modules/home/presentation/bloc/home_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class PostBloc extends Bloc<PostEvent, PostState> {
+class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final GetCommentsUseCase _getCommentsUseCase;
   final ToggleFavoritePostUseCase _toggleFavoritePostUseCase;
   final GetPostsWithFavoritesUseCase _getPostsWithFavoritesUseCase;
 
-  PostBloc({
+  HomeBloc({
     required GetCommentsUseCase getCommentsUseCase,
     required ToggleFavoritePostUseCase toggleFavoritePostUseCase,
     required GetPostsWithFavoritesUseCase getPostsWithFavoritesUseCase,
   })  : _getCommentsUseCase = getCommentsUseCase,
         _toggleFavoritePostUseCase = toggleFavoritePostUseCase,
         _getPostsWithFavoritesUseCase = getPostsWithFavoritesUseCase,
-        super(PostInitial()) {
+        super(HomeInitial()) {
     on<LoadPostsEvent>(_onLoadPosts);
     on<ToggleFavoritePostEvent>(_onToggleFavoritePost);
   }
   Future<void> _onLoadPosts(
     LoadPostsEvent event,
-    Emitter<PostState> emit,
+    Emitter<HomeState> emit,
   ) async {
-    emit(PostLoading());
+    emit(HomeLoading());
     try {
       final postsWithFavorite = await _getPostsWithFavoritesUseCase.call();
-      emit(PostLoaded(postsWithFavorite));
+      emit(HomeLoaded(postsWithFavorite));
     } catch (e) {
-      emit(PostError('Erro ao carregar os posts.'));
+      emit(HomeError('Erro ao carregar os posts.'));
     }
   }
 
@@ -45,7 +45,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
 
   Future<void> _onToggleFavoritePost(
     ToggleFavoritePostEvent event,
-    Emitter<PostState> emit,
+    Emitter<HomeState> emit,
   ) async {
     try {
       await _toggleFavoritePostUseCase.call(ToggleFavoritePostParams(
@@ -53,7 +53,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
 
       add(LoadPostsEvent());
     } catch (e) {
-      emit(PostError('Erro ao atualizar o favorito.'));
+      emit(HomeError('Erro ao atualizar o favorito.'));
     }
   }
 }
