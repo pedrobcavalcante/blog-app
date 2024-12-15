@@ -19,6 +19,7 @@ dependencies:
   flutter_bloc: ^8.1.6
   equatable: ^2.0.7
   cloud_firestore: ^5.5.1
+  flutter_native_splash: ^2.4.3
 
 dev_dependencies:
   flutter_test:
@@ -29,3 +30,8 @@ flutter:
   uses-material-design: true
   assets:
     - .env
+flutter_native_splash:
+  color: "#2196F3"
+  android: true
+  ios: true
+  web: false
