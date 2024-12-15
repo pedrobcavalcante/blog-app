@@ -36,24 +36,37 @@ jobs:
       - name: Install Flutter Dependencies
         run: flutter pub get
 
-      # 5. Criar google-services.json a partir do JSON salvo no GitHub Secrets
+      # 5. Executar Testes Unitários
+      - name: Run Unit Tests
+        run: |
+          echo "Running Flutter Unit Tests..."
+          flutter test --coverage
+
+      # 6. Criar google-services.json a partir do JSON salvo no GitHub Secrets
       - name: Create google-services.json
         run: |
           echo '${{ secrets.GOOGLE_SERVICES_JSON }}' > android/app/google-services.json
 
-      # 6. Validar google-services.json
+      # 7. Validar google-services.json
       - name: Validate google-services.json
         run: |
           echo "Validating google-services.json..."
           cat android/app/google-services.json | jq empty && echo "google-services.json is valid!"
 
-      # 7. Build do APK em modo release
+      # 8. Build do APK em modo release
       - name: Build Android APK
         run: flutter build apk --release
 
-      # 8. Upload do APK como artefato
+      # 9. Upload do APK como artefato
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v3
         with:
           name: android-release-apk
           path: build/app/outputs/flutter-apk/app-release.apk
+
+      # 10. Upload do Relatório de Cobertura
+      - name: Upload Test Coverage Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: flutter-test-coverage
+          path: coverage/lcov.info
