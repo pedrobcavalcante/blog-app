@@ -50,7 +50,6 @@ void main() {
     mockDocument = MockDocumentReference();
     mockQuerySnapshot = MockQuerySnapshot();
 
-    // Garante que qualquer retorno de `set` tenha o tipo correto
     when(() => mockDocument.set(any(), any()))
         .thenAnswer((_) async => Future<void>.value());
   });
