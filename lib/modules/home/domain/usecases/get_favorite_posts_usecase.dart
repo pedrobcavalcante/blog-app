@@ -4,11 +4,11 @@ import 'package:blog/core/domain/usecases/usecase.dart';
 import 'package:blog/shared/domain/usecases/get_secure_storage_usecase.dart';
 
 class GetFavoritePostsUseCase implements UseCase<void, List<FavoritePost>> {
-  final FirebaseRepository _repository;
+  final FirestoreRepository _repository;
   final GetTokenUseCase _getTokenUseCase;
 
   const GetFavoritePostsUseCase({
-    required FirebaseRepository repository,
+    required FirestoreRepository repository,
     required GetTokenUseCase getTokenUseCase,
   })  : _repository = repository,
         _getTokenUseCase = getTokenUseCase;

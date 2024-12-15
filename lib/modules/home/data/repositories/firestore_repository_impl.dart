@@ -2,7 +2,7 @@ import 'package:blog/modules/home/domain/datasources/firestore_datasource.dart';
 import 'package:blog/modules/home/domain/entities/favorite_post.dart';
 import 'package:blog/modules/home/domain/repository/firebase_repository.dart';
 
-class FirebaseRepositoryImpl implements FirebaseRepository {
+class FirebaseRepositoryImpl implements FirestoreRepository {
   final FirestoreDatasource _datasource;
 
   FirebaseRepositoryImpl({required FirestoreDatasource datasource})

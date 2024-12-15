@@ -6,7 +6,7 @@ import 'package:blog/modules/app_drawer/domain/usecases/delete_token_usecase.dar
 import 'package:blog/modules/app_drawer/presentation/bloc/drawer_bloc.dart';
 import 'package:blog/modules/home/data/datasources/firestore_datasource.dart';
 import 'package:blog/modules/home/data/datasources/remote_datasource_impl.dart';
-import 'package:blog/modules/home/data/repositories/firestore_repository.dart';
+import 'package:blog/modules/home/data/repositories/firestore_repository_impl.dart';
 import 'package:blog/modules/home/domain/datasources/firestore_datasource.dart';
 import 'package:blog/modules/home/domain/datasources/remote_datasource.dart';
 import 'package:blog/modules/home/domain/repository/firebase_repository.dart';
@@ -18,6 +18,7 @@ import 'package:blog/modules/home/domain/usecases/get_posts_with_favorites_useca
 import 'package:blog/modules/home/domain/usecases/is_post_favorited_usecase.dart';
 import 'package:blog/modules/home/domain/usecases/toggle_favorite_post_usecase.dart';
 import 'package:blog/modules/home/presentation/bloc/home_bloc.dart';
+import 'package:blog/modules/home/presentation/cubit/favority_cubit.dart';
 import 'package:blog/modules/home/presentation/screen/home_screen.dart';
 import 'package:blog/modules/login/domain/usecase/save_secure_storage_usecase.dart';
 import 'package:blog/modules/login/presentation/bloc/login_bloc.dart';
@@ -61,7 +62,7 @@ class AppModule extends Module {
         () => FirestoreDatasourceImpl(firestore: i()));
 
     // Repositories
-    i.addLazySingleton<FirebaseRepository>(
+    i.addLazySingleton<FirestoreRepository>(
         () => FirebaseRepositoryImpl(datasource: i()));
 
     // Use cases
@@ -89,6 +90,9 @@ class AppModule extends Module {
           repository: i(),
         ));
 
+    // Cubits
+    i.addLazySingleton<FavoriteCubit>(() => FavoriteCubit(i()));
+
     // Blocs
     i.addLazySingleton<LoginBloc>(
         () => LoginBloc(loginUseCase: i(), saveSecureStorageUseCase: i()));
@@ -97,7 +101,6 @@ class AppModule extends Module {
     i.addLazySingleton<HomeBloc>(
       () => HomeBloc(
         getCommentsUseCase: i(),
-        toggleFavoritePostUseCase: i(),
         getPostsWithFavoritesUseCase: i(),
       ),
     );

@@ -14,11 +14,11 @@ class ToggleFavoritePostParams {
 
 class ToggleFavoritePostUseCase
     implements UseCase<ToggleFavoritePostParams, void> {
-  final FirebaseRepository _repository;
+  final FirestoreRepository _repository;
   final GetTokenUseCase _getTokenUseCase;
 
   const ToggleFavoritePostUseCase({
-    required FirebaseRepository repository,
+    required FirestoreRepository repository,
     required GetTokenUseCase getTokenUseCase,
   })  : _repository = repository,
         _getTokenUseCase = getTokenUseCase;

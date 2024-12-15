@@ -3,11 +3,11 @@ import 'package:blog/core/domain/usecases/usecase.dart';
 import 'package:blog/shared/domain/usecases/get_secure_storage_usecase.dart';
 
 class IsPostFavoritedUseCase implements UseCase<String, bool> {
-  final FirebaseRepository _repository;
+  final FirestoreRepository _repository;
   final GetTokenUseCase _getTokenUseCase;
 
   const IsPostFavoritedUseCase(
-      {required FirebaseRepository repository,
+      {required FirestoreRepository repository,
       required GetTokenUseCase getTokenUseCase})
       : _repository = repository,
         _getTokenUseCase = getTokenUseCase;
