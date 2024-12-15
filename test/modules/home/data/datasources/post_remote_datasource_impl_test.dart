@@ -1,5 +1,5 @@
 import 'package:blog/core/network/interface/http_client_interface.dart';
-import 'package:blog/modules/home/data/datasources/remote_datasource_impl.dart';
+import 'package:blog/modules/home/data/datasources/post_remote_datasource_impl.dart';
 import 'package:blog/modules/home/domain/entities/post.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
