@@ -1,0 +1,36 @@
+name: Flutter Unit Tests
+
+on:
+  push:
+    branches:
+      - main
+      - feature/configure-pipeline
+  pull_request:
+    branches:
+      - main
+      - feature/configure-pipeline
+
+jobs:
+  unit_tests:
+    name: Run Unit Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        run: |
+          sudo apt update
+          sudo apt install openjdk-17-jdk -y
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.24.5"
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Run tests with coverage
+        run: flutter test --coverage
