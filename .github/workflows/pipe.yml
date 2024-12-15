@@ -1,4 +1,4 @@
-name: Flutter CI/CD
+name: Flutter Unit Tests
 
 on:
   push:
@@ -11,8 +11,8 @@ on:
       - feature/configure-pipeline
 
 jobs:
-  android:
-    name: Build Android
+  unit_tests:
+    name: Run Unit Tests
     runs-on: ubuntu-latest
 
     steps:
@@ -32,65 +32,5 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Get latest Git tag and set version
-        id: versioning
-        run: |
-          TAG=$(git fetch --tags && git describe --tags --abbrev=0 2>/dev/null || echo "v1.0.0")
-          VERSION_NAME=${TAG//v/}
-          VERSION_CODE=$(git rev-list $TAG..HEAD --count)
-          echo "version_name=$VERSION_NAME" >> $GITHUB_ENV
-          echo "version_code=$VERSION_CODE" >> $GITHUB_ENV
-
       - name: Run tests with coverage
         run: flutter test --coverage
-
-      - name: Build APK
-        run: flutter build apk --release --build-name=$VERSION_NAME --build-number=$VERSION_CODE
-
-      - name: Upload APK Artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: app-release.apk
-          path: build/app/outputs/flutter-apk/app-release.apk
-
-  ios:
-    name: Build iOS
-    runs-on: macos-latest
-
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
-      - name: Set up JDK 17
-        run: |
-          brew update
-          brew install --cask temurin17
-
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: "stable"
-
-      - name: Install dependencies
-        run: flutter pub get
-
-      - name: Get latest Git tag and set version
-        id: versioning
-        run: |
-          TAG=$(git fetch --tags && git describe --tags --abbrev=0 2>/dev/null || echo "v1.0.0")
-          VERSION_NAME=${TAG//v/}
-          VERSION_CODE=$(git rev-list $TAG..HEAD --count)
-          echo "version_name=$VERSION_NAME" >> $GITHUB_ENV
-          echo "version_code=$VERSION_CODE" >> $GITHUB_ENV
-
-      - name: Run tests with coverage
-        run: flutter test --coverage
-
-      - name: Build iOS
-        run: flutter build ios --release --build-name=$VERSION_NAME --build-number=$VERSION_CODE
-
-      - name: Upload IPA Artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: Runner.app
-          path: build/ios/iphoneos/Runner.app
