@@ -25,12 +25,9 @@ class GetPostsWithFavoritesUseCase implements UseCase<void, List<Post>> {
     final favoritePosts = results[1] as List<FavoritePost>;
 
     return posts.map((post) {
-      bool isFavorited = false;
-      for (final favoritePost in favoritePosts) {
-        if (favoritePost.postId == post.id.toString()) {
-          isFavorited = favoritePost.isFavorited;
-        }
-      }
+      final isFavorited = favoritePosts.any((favoritePost) =>
+          favoritePost.postId == post.id.toString() &&
+          favoritePost.isFavorited);
       return Post(
         id: post.id,
         title: post.title,

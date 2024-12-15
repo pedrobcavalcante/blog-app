@@ -2,6 +2,7 @@ import 'package:blog/modules/app_drawer/presentation/screen/app_drawer.dart';
 import 'package:blog/modules/home/presentation/bloc/home_event.dart';
 import 'package:blog/modules/home/presentation/bloc/home_state.dart';
 import 'package:blog/modules/home/presentation/bloc/home_bloc.dart';
+import 'package:blog/modules/home/presentation/widgets/home_error.dart';
 import 'package:blog/modules/home/presentation/widgets/post_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -37,30 +38,29 @@ class HomeScreen extends StatelessWidget {
       drawer: const AppDrawer(),
       body: BlocProvider(
         create: (context) => bloc..add(LoadPostsEvent()),
-        child: BlocBuilder<HomeBloc, HomeState>(
-          builder: (context, state) {
-            if (state is HomeLoading) {
-              return const Center(child: CircularProgressIndicator());
-            }
+        child: RefreshIndicator(
+          onRefresh: () async {
+            bloc.add(LoadPostsEvent());
+          },
+          child: BlocBuilder<HomeBloc, HomeState>(
+            builder: (context, state) {
+              if (state is HomeLoading) {
+                return const Center(child: CircularProgressIndicator());
+              }
 
-            if (state is HomeError) {
-              return Center(child: Text(state.message));
-            }
+              if (state is HomeError) {
+                return HomeErrorWidget(message: state.message);
+              }
 
-            if (state is HomeLoaded) {
-              return RefreshIndicator(
-                onRefresh: () async {
-                  bloc.add(LoadPostsEvent());
-                },
-                child: PostList(
+              if (state is HomeLoaded) {
+                return PostList(
                   posts: state.posts,
                   future: bloc.getComments,
-                ),
-              );
-            }
-
-            return const Center(child: Text('Nenhum post encontrado.'));
-          },
+                );
+              }
+              return const HomeErrorWidget(message: 'Nenhum post encontrado.');
+            },
+          ),
         ),
       ),
     );

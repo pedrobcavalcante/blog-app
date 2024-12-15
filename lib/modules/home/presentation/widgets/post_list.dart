@@ -1,6 +1,7 @@
 import 'package:blog/modules/home/domain/entities/comments.dart';
 import 'package:blog/modules/home/domain/entities/post.dart';
 import 'package:blog/modules/home/presentation/cubit/favority_cubit.dart';
+import 'package:blog/modules/home/presentation/widgets/favorite_button.dart';
 import 'package:blog/modules/home/presentation/widgets/post_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -81,7 +82,11 @@ class _PostListState extends State<PostList> {
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
-                            _buildFavoriteButton(buttonState, post),
+                            FavoriteButton(
+                              buttonState: buttonState,
+                              post: post,
+                              toggleFavorite: _cubit.toggleFavorite,
+                            ),
                           ],
                         ),
                         subtitle: Text(
@@ -98,24 +103,6 @@ class _PostListState extends State<PostList> {
           );
         },
       ),
-    );
-  }
-
-  Widget _buildFavoriteButton(ButtonState buttonState, FavoriteState post) {
-    if (buttonState == ButtonState.loading) {
-      return const CircularProgressIndicator();
-    }
-
-    return IconButton(
-      icon: Icon(
-        post.isFavorited ? Icons.favorite : Icons.favorite_border,
-        color: post.isFavorited ? Colors.red : null,
-      ),
-      onPressed: () {
-        if (buttonState != ButtonState.loading) {
-          _cubit.toggleFavorite(post.id, !post.isFavorited);
-        }
-      },
     );
   }
 }
