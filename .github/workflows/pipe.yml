@@ -1,4 +1,4 @@
-name: Flutter Unit Tests
+name: Flutter CI/CD Pipeline
 
 on:
   push:
@@ -11,26 +11,47 @@ on:
       - feature/configure-pipeline
 
 jobs:
-  unit_tests:
-    name: Run Unit Tests
+  build_and_test:
+    name: Build & Test Flutter Project
     runs-on: ubuntu-latest
 
     steps:
+      # 1. Checkout do código
       - name: Checkout Code
         uses: actions/checkout@v3
 
+      # 2. Configurar o JDK 17
       - name: Set up JDK 17
         run: |
           sudo apt update
           sudo apt install openjdk-17-jdk -y
 
+      # 3. Configurar o Flutter
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
           flutter-version: "3.24.5"
 
-      - name: Install dependencies
+      # 4. Instalar dependências
+      - name: Install Dependencies
         run: flutter pub get
 
-      - name: Run tests with coverage
+      # 5. Criar google-services.json
+      - name: Create google-services.json
+        run: |
+          echo "${{ secrets.GOOGLE_SERVICES_JSON }}" > android/app/google-services.json
+
+      # 6. Executar testes unitários com cobertura
+      - name: Run Tests with Coverage
         run: flutter test --coverage
+
+      # 7. Build APK para Android
+      - name: Build Android APK
+        run: flutter build apk --release
+
+      # 8. Salvar o APK como artefato
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: android-release-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
