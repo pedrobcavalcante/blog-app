@@ -1,5 +1,7 @@
 import 'package:blog/core/network/interface/http_client_interface.dart';
 import 'package:blog/modules/home/data/datasources/post_remote_datasource_impl.dart';
+import 'package:blog/modules/home/domain/entities/comments.dart';
+
 import 'package:blog/modules/home/domain/entities/post.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -74,6 +76,41 @@ void main() {
 
       expect(
           () => postRemoteDataSource.getPostById(1), throwsA(isA<Exception>()));
+    });
+    test('should return a list of comments when the response is successful',
+        () async {
+      when(() => mockHttpClient.get('/comments?postId=1')).thenAnswer(
+        (_) async => Response(
+          requestOptions: RequestOptions(path: '/comments?postId=1'),
+          statusCode: 200,
+          data: [
+            {'id': 1, 'postId': 1, 'body': 'Comment 1'},
+            {'id': 2, 'postId': 1, 'body': 'Comment 2'},
+          ],
+        ),
+      );
+
+      final result = await postRemoteDataSource.getCommentsByPostId(1);
+
+      verify(() => mockHttpClient.get('/comments?postId=1')).called(1);
+
+      expect(result, isA<List<Comment>>());
+      expect(result.length, 2);
+
+      expect(result[0].id, 1);
+      expect(result[0].postId, 1);
+      expect(result[0].body, 'Comment 1');
+
+      expect(result[1].id, 2);
+      expect(result[1].postId, 1);
+      expect(result[1].body, 'Comment 2');
+    });
+    test('should throw an exception when the call fails', () async {
+      when(() => mockHttpClient.get('/comments?postId=1'))
+          .thenThrow(Exception('Failed to fetch comments'));
+
+      expect(() => postRemoteDataSource.getCommentsByPostId(1),
+          throwsA(isA<Exception>()));
     });
   });
 }

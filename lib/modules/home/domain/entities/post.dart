@@ -19,13 +19,4 @@ class Post {
       isFavorited: json['isFavorited'] ?? false,
     );
   }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'title': title,
-      'body': body,
-      'isFavorited': isFavorited,
-    };
-  }
 }

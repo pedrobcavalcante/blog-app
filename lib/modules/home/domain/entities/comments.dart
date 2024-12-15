@@ -15,11 +15,11 @@ class Comment {
 
   factory Comment.fromJson(Map<String, dynamic> json) {
     return Comment(
-      postId: json['postId'],
-      id: json['id'],
-      name: json['name'],
-      email: json['email'],
-      body: json['body'],
+      postId: json['postId'] as int? ?? 0,
+      id: json['id'] as int? ?? 0,
+      name: json['name'] as String? ?? '',
+      email: json['email'] as String? ?? '',
+      body: json['body'] as String? ?? '',
     );
   }
 }
