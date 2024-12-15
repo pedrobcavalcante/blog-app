@@ -10,8 +10,12 @@ class HttpClient implements HttpClientInterface {
           connectTimeout: const Duration(milliseconds: 5000),
           receiveTimeout: const Duration(milliseconds: 3000),
         )) {
-    _dio.interceptors
-        .add(LogInterceptor(requestBody: true, responseBody: true));
+    _dio.interceptors.add(LogInterceptor(
+      request: false,
+      requestHeader: false,
+      responseHeader: false,
+      error: false,
+    ));
   }
 
   @override
