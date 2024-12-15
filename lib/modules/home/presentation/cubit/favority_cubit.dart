@@ -34,21 +34,25 @@ class FavoriteState extends Post {
 
 class FavoriteCubit extends Cubit<Map<String, ButtonState>> {
   final ToggleFavoritePostUseCase toggleFavoriteUseCase;
+
   FavoriteCubit(this.toggleFavoriteUseCase) : super({});
+
   List<FavoriteState> favorites = [];
+
   Future<void> addFavorites(List<Post> posts) async {
     for (var post in posts) {
-      final favoriteState = FavoriteState(
+      favorites.add(FavoriteState(
         buttonState: ButtonState.initial,
         body: post.body,
         id: post.id,
         title: post.title,
         isFavorited: post.isFavorited,
-      );
-
-      favorites.add(favoriteState);
+      ));
     }
-    _emitState();
+
+    emit({
+      for (var post in favorites) post.id.toString(): post.buttonState,
+    });
   }
 
   Future<void> toggleFavorite(int postId, bool isFavorited) async {
@@ -56,10 +60,9 @@ class FavoriteCubit extends Cubit<Map<String, ButtonState>> {
       final index = favorites.indexWhere((post) => post.id == postId);
       if (index == -1) return;
 
-      favorites[index] = favorites[index].copyWith(
-        buttonState: ButtonState.loading,
-      );
-      _emitState();
+      favorites[index] =
+          favorites[index].copyWith(buttonState: ButtonState.loading);
+      _emitPartial(postId.toString(), ButtonState.loading);
 
       await toggleFavoriteUseCase(
         ToggleFavoritePostParams(postId: postId, isFavorited: isFavorited),
@@ -69,21 +72,18 @@ class FavoriteCubit extends Cubit<Map<String, ButtonState>> {
         buttonState: ButtonState.initial,
         isFavorited: isFavorited,
       );
-      _emitState();
+      _emitPartial(postId.toString(), ButtonState.initial);
     } catch (e) {
       final index = favorites.indexWhere((post) => post.id == postId);
       if (index != -1) {
-        favorites[index] = favorites[index].copyWith(
-          buttonState: ButtonState.error,
-        );
-        _emitState();
+        favorites[index] =
+            favorites[index].copyWith(buttonState: ButtonState.error);
+        _emitPartial(postId.toString(), ButtonState.error);
       }
     }
   }
 
-  void _emitState() {
-    emit({
-      for (var post in favorites) post.id.toString(): post.buttonState,
-    });
+  void _emitPartial(String postId, ButtonState state) {
+    emit({...this.state, postId: state});
   }
 }
