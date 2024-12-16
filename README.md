@@ -154,7 +154,7 @@ Com mais tempo e recursos, as seguintes melhorias poderiam ser implementadas no 
 
 1. **Cobertura de Testes Adicionais:**
 
-   - Testar as camadas de **Bloc**, **Screen** e **Widgets** para maior confiabilidade.
+   - Testar as camadas de **Screen** e **Widgets** para maior confiabilidade.
 
 2. **Tela de Criação de Usuário:**
 

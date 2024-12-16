@@ -22,7 +22,7 @@ class FavoriteCubit extends Cubit<FavoriteCubitState> {
           .toList();
       emit(FavoriteLoaded(favoritePosts));
     } catch (e) {
-      emit(FavoriteError('Failed to load favorites'));
+      emit(const FavoriteError('Failed to load favorites'));
     }
   }
 
@@ -31,28 +31,27 @@ class FavoriteCubit extends Cubit<FavoriteCubitState> {
     if (currentState is! FavoriteLoaded) return;
 
     try {
-      final index =
-          currentState.favorites.indexWhere((post) => post.id == postId);
-      if (index == -1) return;
+      final favoritesMap = {
+        for (var favorite in currentState.favorites) favorite.id: favorite
+      };
 
-      final updatedFavorites = List<FavoriteState>.from(currentState.favorites);
-      updatedFavorites[index] =
-          updatedFavorites[index].copyWith(isLoading: true);
+      if (!favoritesMap.containsKey(postId)) return;
 
-      emit(FavoriteLoaded(updatedFavorites));
+      favoritesMap[postId] = favoritesMap[postId]!.copyWith(isLoading: true);
+      emit(FavoriteLoaded(favoritesMap.values.toList()));
 
       await toggleFavoriteUseCase(
         ToggleFavoritePostParams(postId: postId, isFavorited: isFavorited),
       );
 
-      updatedFavorites[index] = updatedFavorites[index].copyWith(
+      favoritesMap[postId] = favoritesMap[postId]!.copyWith(
         isLoading: false,
         isFavorited: isFavorited,
       );
 
-      emit(FavoriteLoaded(updatedFavorites));
+      emit(FavoriteLoaded(favoritesMap.values.toList()));
     } catch (e) {
-      emit(FavoriteError('Failed to toggle favorite'));
+      emit(const FavoriteError('Failed to toggle favorite'));
     }
   }
 }

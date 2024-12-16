@@ -1,6 +1,7 @@
 import 'package:blog/modules/home/domain/entities/post.dart';
+import 'package:equatable/equatable.dart';
 
-class FavoriteState extends Post {
+class FavoriteState extends Post with EquatableMixin {
   final bool isLoading;
 
   FavoriteState({
@@ -10,6 +11,9 @@ class FavoriteState extends Post {
     required super.body,
     super.isFavorited,
   });
+
+  @override
+  List<Object?> get props => [id, title, body, isFavorited, isLoading];
 
   FavoriteState copyWith({
     bool? isLoading,

@@ -29,8 +29,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     } on FirebaseAuthException catch (e) {
       emit(LoginFailure(errorMessage: _getErrorMessage(e.code)));
     } catch (_) {
-      emit(
-          LoginFailure(errorMessage: "Erro inesperado ao tentar fazer login."));
+      emit(const LoginFailure(
+          errorMessage: "Erro inesperado ao tentar fazer login."));
     }
   }
 

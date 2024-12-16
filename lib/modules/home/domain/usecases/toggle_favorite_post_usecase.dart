@@ -1,8 +1,9 @@
 import 'package:blog/modules/home/domain/repository/firebase_repository.dart';
 import 'package:blog/core/domain/usecases/usecase.dart';
 import 'package:blog/shared/domain/usecases/get_secure_storage_usecase.dart';
+import 'package:equatable/equatable.dart';
 
-class ToggleFavoritePostParams {
+class ToggleFavoritePostParams extends Equatable {
   final int postId;
   final bool isFavorited;
 
@@ -10,6 +11,9 @@ class ToggleFavoritePostParams {
     required this.postId,
     required this.isFavorited,
   });
+
+  @override
+  List<Object?> get props => [postId, isFavorited];
 }
 
 class ToggleFavoritePostUseCase
