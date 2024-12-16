@@ -27,13 +27,14 @@ class _AppDrawerState extends State<AppDrawer> {
   Widget build(BuildContext context) {
     final bloc = Modular.get<DrawerBloc>();
     return BlocProvider(
-      create: (context) => bloc,
+      create: (context) => bloc..add(DrawerInitialized()),
       child: Drawer(
         backgroundColor: Colors.blueAccent,
         child: Padding(
           padding: const EdgeInsets.all(24.0),
           child: Column(
             children: [
+              const SizedBox(height: 48),
               const CircleAvatar(
                 radius: 40,
                 backgroundColor: Colors.white,
@@ -44,13 +45,50 @@ class _AppDrawerState extends State<AppDrawer> {
                 ),
               ),
               const SizedBox(height: 10),
-              const Text(
-                'Usuário',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
+              BlocBuilder<DrawerBloc, DrawerState>(
+                builder: (context, state) {
+                  if (state is DrawerLoading) {
+                    return const Text(
+                      'Carregando...',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    );
+                  } else if (state is DrawerDataLoaded) {
+                    return Column(
+                      children: [
+                        Text(
+                          state.userName,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 5),
+                        Text(
+                          state.userEmail,
+                          style: const TextStyle(
+                            color: Colors.white70,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    );
+                  } else if (state is DrawerFailure) {
+                    return const Text(
+                      'Erro ao carregar dados',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    );
+                  }
+                  return const SizedBox();
+                },
               ),
               const Spacer(),
               BlocConsumer<DrawerBloc, DrawerState>(

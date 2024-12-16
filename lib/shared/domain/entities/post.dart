@@ -6,7 +6,7 @@ class Post extends Equatable {
   final String body;
   final bool isFavorited;
 
-  Post({
+  const Post({
     required this.id,
     required this.title,
     required this.body,

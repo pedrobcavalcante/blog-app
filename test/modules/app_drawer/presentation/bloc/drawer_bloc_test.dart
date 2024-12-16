@@ -1,59 +1,111 @@
-import 'package:blog/modules/app_drawer/domain/usecases/delete_token_usecase.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:blog/modules/app_drawer/presentation/bloc/drawer_bloc.dart';
 import 'package:blog/modules/app_drawer/presentation/bloc/drawer_event.dart';
 import 'package:blog/modules/app_drawer/presentation/bloc/drawer_state.dart';
-import 'package:bloc_test/bloc_test.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
+import 'package:blog/shared/domain/usecases/get_user_email_usecase.dart';
+import 'package:blog/shared/domain/usecases/get_username_usecase.dart';
+import 'package:blog/modules/app_drawer/domain/usecases/delete_user_data_usecase.dart';
 
-class MockDeleteTokenUseCase extends Mock implements DeleteTokenUseCase {}
+class MockGetUsernameUseCase extends Mock implements GetUsernameUseCase {}
+
+class MockGetUserEmailUseCase extends Mock implements GetUserEmailUseCase {}
+
+class MockDeleteUserDataUseCase extends Mock implements DeleteUserDataUseCase {}
 
 void main() {
+  late MockGetUsernameUseCase mockGetUsernameUseCase;
+  late MockGetUserEmailUseCase mockGetUserEmailUseCase;
+  late MockDeleteUserDataUseCase mockDeleteUserDataUseCase;
   late DrawerBloc drawerBloc;
-  late MockDeleteTokenUseCase mockDeleteTokenUseCase;
 
   setUp(() {
-    mockDeleteTokenUseCase = MockDeleteTokenUseCase();
-    drawerBloc = DrawerBloc(mockDeleteTokenUseCase);
+    mockGetUsernameUseCase = MockGetUsernameUseCase();
+    mockGetUserEmailUseCase = MockGetUserEmailUseCase();
+    mockDeleteUserDataUseCase = MockDeleteUserDataUseCase();
+    drawerBloc = DrawerBloc(
+      getUsernameUseCase: mockGetUsernameUseCase,
+      getUserEmailUseCase: mockGetUserEmailUseCase,
+      deleteUserDataUseCase: mockDeleteUserDataUseCase,
+    );
   });
 
-  tearDown(() {
-    drawerBloc.close();
-  });
+  group('DrawerBloc', () {
+    test(
+        'emits DrawerDataLoaded when DrawerInitialized is added and data is loaded successfully',
+        () async {
+      when(() => mockGetUsernameUseCase.call())
+          .thenAnswer((_) async => 'JohnDoe');
+      when(() => mockGetUserEmailUseCase.call())
+          .thenAnswer((_) async => 'johndoe@example.com');
 
-  group('DrawerBloc Tests', () {
-    blocTest<DrawerBloc, DrawerState>(
-      'emits [DeleteTokenInProgress, DeleteTokenSuccess] when DeleteTokenRequested succeeds',
-      build: () {
-        when(() => mockDeleteTokenUseCase.call())
-            .thenAnswer((_) async => Future.value());
-        return drawerBloc;
-      },
-      act: (bloc) => bloc.add(DeleteTokenRequested()),
-      expect: () => [
+      final expectedStates = [
+        isA<DrawerLoading>(),
+        isA<DrawerDataLoaded>(),
+      ];
+
+      expectLater(
+        drawerBloc.stream,
+        emitsInOrder(expectedStates),
+      );
+
+      drawerBloc.add(DrawerInitialized());
+    });
+
+    test(
+        'emits DrawerFailure when DrawerInitialized is added and an error occurs',
+        () async {
+      when(() => mockGetUsernameUseCase.call()).thenThrow(Exception('Error'));
+      when(() => mockGetUserEmailUseCase.call()).thenThrow(Exception('Error'));
+
+      final expectedStates = [
+        isA<DrawerLoading>(),
+        isA<DrawerFailure>(),
+      ];
+
+      expectLater(
+        drawerBloc.stream,
+        emitsInOrder(expectedStates),
+      );
+
+      drawerBloc.add(DrawerInitialized());
+    });
+
+    test(
+        'emits DeleteTokenSuccess when DeleteTokenRequested is added and deletion is successful',
+        () async {
+      when(() => mockDeleteUserDataUseCase())
+          .thenAnswer((_) async => Future.value());
+
+      final expectedStates = [
         isA<DeleteTokenInProgress>(),
         isA<DeleteTokenSuccess>(),
-      ],
-      verify: (_) {
-        verify(() => mockDeleteTokenUseCase.call()).called(1);
-      },
-    );
+      ];
 
-    blocTest<DrawerBloc, DrawerState>(
-      'emits [DeleteTokenInProgress, DeleteTokenFailure] when DeleteTokenRequested fails',
-      build: () {
-        when(() => mockDeleteTokenUseCase.call())
-            .thenThrow(Exception('Erro ao deletar token'));
-        return drawerBloc;
-      },
-      act: (bloc) => bloc.add(DeleteTokenRequested()),
-      expect: () => [
+      expectLater(
+        drawerBloc.stream,
+        emitsInOrder(expectedStates),
+      );
+
+      drawerBloc.add(DeleteTokenRequested());
+    });
+
+    test(
+        'emits DeleteTokenFailure when DeleteTokenRequested is added and deletion fails',
+        () async {
+      when(() => mockDeleteUserDataUseCase()).thenThrow(Exception('Error'));
+
+      final expectedStates = [
         isA<DeleteTokenInProgress>(),
         isA<DeleteTokenFailure>(),
-      ],
-      verify: (_) {
-        verify(() => mockDeleteTokenUseCase.call()).called(1);
-      },
-    );
+      ];
+
+      expectLater(
+        drawerBloc.stream,
+        emitsInOrder(expectedStates),
+      );
+
+      drawerBloc.add(DeleteTokenRequested());
+    });
   });
 }

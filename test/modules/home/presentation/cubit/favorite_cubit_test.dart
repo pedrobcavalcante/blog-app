@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:blog/modules/home/presentation/cubit/favorite_cubit.dart';
 import 'package:blog/modules/home/domain/usecases/toggle_favorite_post_usecase.dart';
-import 'package:blog/modules/home/domain/entities/post.dart';
+import 'package:blog/shared/domain/entities/post.dart';
 
 class MockToggleFavoritePostUseCase extends Mock
     implements ToggleFavoritePostUseCase {}
@@ -20,8 +20,8 @@ void main() {
   });
 
   final posts = [
-    Post(id: 1, title: 'Post 1', body: 'Body 1', isFavorited: false),
-    Post(id: 2, title: 'Post 2', body: 'Body 2', isFavorited: true),
+    const Post(id: 1, title: 'Post 1', body: 'Body 1', isFavorited: false),
+    const Post(id: 2, title: 'Post 2', body: 'Body 2', isFavorited: true),
   ];
 
   blocTest<FavoriteCubit, FavoriteCubitState>(

@@ -1,10 +1,10 @@
 import 'package:blog/modules/home/domain/datasources/firestore_datasource.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class FirestoreDatasourceImpl implements FirestoreDatasource {
+class FavoriteDatasourceImpl implements FavoriteDatasource {
   final FirebaseFirestore _firestore;
 
-  FirestoreDatasourceImpl({
+  FavoriteDatasourceImpl({
     required FirebaseFirestore firestore,
   }) : _firestore = firestore;
 

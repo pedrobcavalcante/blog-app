@@ -18,11 +18,11 @@ class ToggleFavoritePostParams extends Equatable {
 
 class ToggleFavoritePostUseCase
     implements UseCase<ToggleFavoritePostParams, void> {
-  final FirestoreRepository _repository;
+  final FavoriteRepository _repository;
   final GetTokenUseCase _getTokenUseCase;
 
   const ToggleFavoritePostUseCase({
-    required FirestoreRepository repository,
+    required FavoriteRepository repository,
     required GetTokenUseCase getTokenUseCase,
   })  : _repository = repository,
         _getTokenUseCase = getTokenUseCase;

@@ -1,5 +1,5 @@
 import 'package:blog/modules/home/domain/entities/favorite_post.dart';
-import 'package:blog/modules/home/domain/entities/post.dart';
+import 'package:blog/shared/domain/entities/post.dart';
 import 'package:blog/modules/home/domain/usecases/get_favorite_posts_usecase.dart';
 import 'package:blog/modules/home/domain/usecases/get_posts_usecase.dart';
 import 'package:blog/modules/home/domain/usecases/get_posts_with_favorites_usecase.dart';
@@ -29,9 +29,9 @@ void main() {
     test('should return posts with favorite status when both calls succeed',
         () async {
       final posts = [
-        Post(id: 1, title: 'Post 1', body: 'Body 1'),
-        Post(id: 2, title: 'Post 2', body: 'Body 2'),
-        Post(id: 3, title: 'Post 3', body: 'Body 3'),
+        const Post(id: 1, title: 'Post 1', body: 'Body 1'),
+        const Post(id: 2, title: 'Post 2', body: 'Body 2'),
+        const Post(id: 3, title: 'Post 3', body: 'Body 3'),
       ];
 
       final favoritePosts = [
@@ -70,8 +70,8 @@ void main() {
     test('should throw an exception if GetFavoritePostsUseCase fails',
         () async {
       final posts = [
-        Post(id: 1, title: 'Post 1', body: 'Body 1'),
-        Post(id: 2, title: 'Post 2', body: 'Body 2'),
+        const Post(id: 1, title: 'Post 1', body: 'Body 1'),
+        const Post(id: 2, title: 'Post 2', body: 'Body 2'),
       ];
 
       when(() => mockGetPostsUseCase.call()).thenAnswer((_) async => posts);

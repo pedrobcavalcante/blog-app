@@ -6,17 +6,17 @@ import 'package:blog/modules/home/domain/usecases/get_favorite_posts_usecase.dar
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-class MockFirestoreRepository extends Mock implements FirestoreRepository {}
+class MockFavoriteRepository extends Mock implements FavoriteRepository {}
 
 class MockGetTokenUseCase extends Mock implements GetTokenUseCase {}
 
 void main() {
   late GetFavoritePostsUseCase useCase;
-  late MockFirestoreRepository mockRepository;
+  late MockFavoriteRepository mockRepository;
   late MockGetTokenUseCase mockGetTokenUseCase;
 
   setUp(() {
-    mockRepository = MockFirestoreRepository();
+    mockRepository = MockFavoriteRepository();
     mockGetTokenUseCase = MockGetTokenUseCase();
     useCase = GetFavoritePostsUseCase(
       repository: mockRepository,

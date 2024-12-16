@@ -4,17 +4,17 @@ import 'package:blog/shared/domain/usecases/get_secure_storage_usecase.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-class MockFirestoreRepository extends Mock implements FirestoreRepository {}
+class MockFavoriteRepository extends Mock implements FavoriteRepository {}
 
 class MockGetTokenUseCase extends Mock implements GetTokenUseCase {}
 
 void main() {
   late IsPostFavoritedUseCase useCase;
-  late MockFirestoreRepository mockRepository;
+  late MockFavoriteRepository mockRepository;
   late MockGetTokenUseCase mockGetTokenUseCase;
 
   setUp(() {
-    mockRepository = MockFirestoreRepository();
+    mockRepository = MockFavoriteRepository();
     mockGetTokenUseCase = MockGetTokenUseCase();
     useCase = IsPostFavoritedUseCase(
       repository: mockRepository,

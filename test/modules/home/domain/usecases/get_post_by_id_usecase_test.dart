@@ -1,5 +1,5 @@
 import 'package:blog/modules/home/domain/datasources/remote_datasource.dart';
-import 'package:blog/modules/home/domain/entities/post.dart';
+import 'package:blog/shared/domain/entities/post.dart';
 import 'package:blog/modules/home/domain/usecases/get_post_by_id_usecase.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -19,7 +19,7 @@ void main() {
     test('should return a Post when the call to the datasource is successful',
         () async {
       const testPostId = 1;
-      final testPost = Post(
+      const testPost = Post(
         id: 1,
         title: 'Test Post',
         body: 'This is a test post',

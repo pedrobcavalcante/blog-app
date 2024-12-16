@@ -1,5 +1,5 @@
 import 'package:blog/modules/home/domain/entities/favorite_post.dart';
-import 'package:blog/modules/home/domain/entities/post.dart';
+import 'package:blog/shared/domain/entities/post.dart';
 import 'package:blog/modules/home/domain/usecases/get_favorite_posts_usecase.dart';
 import 'package:blog/modules/home/domain/usecases/get_posts_usecase.dart';
 import 'package:blog/core/domain/usecases/usecase.dart';

@@ -1,3 +1,5 @@
-abstract class DeleteTokenEvent {}
+abstract class DrawerEvent {}
 
-class DeleteTokenRequested extends DeleteTokenEvent {}
+class DrawerInitialized extends DrawerEvent {}
+
+class DeleteTokenRequested extends DrawerEvent {}

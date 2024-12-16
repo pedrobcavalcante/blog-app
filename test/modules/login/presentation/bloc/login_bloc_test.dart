@@ -1,29 +1,33 @@
 import 'package:blog/modules/login/domain/usecase/login_usecase.dart';
-import 'package:blog/modules/login/domain/usecase/save_secure_storage_usecase.dart';
+import 'package:blog/modules/login/domain/usecase/save_user_information_usecase.dart';
 import 'package:blog/modules/login/presentation/bloc/login_bloc.dart';
 import 'package:blog/modules/login/presentation/bloc/login_event.dart';
 import 'package:blog/modules/login/presentation/bloc/login_state.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:bloc_test/bloc_test.dart';
 
 class MockLoginUseCase extends Mock implements LoginUseCase {}
 
-class MockSaveSecureStorageUseCase extends Mock
-    implements SaveSecureStorageUseCase {}
-
-class MockUserCredential extends Mock implements UserCredential {}
+class MockSaveUserInformationUseCase extends Mock
+    implements SaveUserInformationUseCase {}
 
 class MockUser extends Mock implements User {}
 
+class UserCredentialMock extends Mock implements UserCredential {}
+
 void main() {
   late MockLoginUseCase mockLoginUseCase;
-  late MockSaveSecureStorageUseCase mockSaveSecureStorageUseCase;
+  late MockSaveUserInformationUseCase mockSaveUserInformationUseCase;
+
+  setUpAll(() {
+    registerFallbackValue(UserCredentialMock());
+  });
 
   setUp(() {
     mockLoginUseCase = MockLoginUseCase();
-    mockSaveSecureStorageUseCase = MockSaveSecureStorageUseCase();
+    mockSaveUserInformationUseCase = MockSaveUserInformationUseCase();
 
     registerFallbackValue(LoginParams(email: 'fallback', password: 'fallback'));
   });
@@ -37,18 +41,18 @@ void main() {
       'should emit [LoginInProgress, LoginSuccess] on successful login',
       build: () {
         final mockUser = MockUser();
-        final mockUserCredential = MockUserCredential();
+        final mockUserCredential = UserCredentialMock();
 
         when(() => mockUser.uid).thenReturn(userId);
         when(() => mockUserCredential.user).thenReturn(mockUser);
         when(() => mockLoginUseCase.call(any()))
             .thenAnswer((_) async => mockUserCredential);
-        when(() => mockSaveSecureStorageUseCase.call(userId))
+        when(() => mockSaveUserInformationUseCase(mockUserCredential))
             .thenAnswer((_) async {});
 
         return LoginBloc(
           loginUseCase: mockLoginUseCase,
-          saveSecureStorageUseCase: mockSaveSecureStorageUseCase,
+          saveUserInformationUseCase: mockSaveUserInformationUseCase,
         );
       },
       act: (bloc) => bloc.add(LoginRequested(email: email, password: password)),
@@ -58,7 +62,7 @@ void main() {
       ],
       verify: (_) {
         verify(() => mockLoginUseCase.call(any())).called(1);
-        verify(() => mockSaveSecureStorageUseCase.call(userId)).called(1);
+        verify(() => mockSaveUserInformationUseCase(any())).called(1);
       },
     );
 
@@ -71,7 +75,7 @@ void main() {
 
         return LoginBloc(
           loginUseCase: mockLoginUseCase,
-          saveSecureStorageUseCase: mockSaveSecureStorageUseCase,
+          saveUserInformationUseCase: mockSaveUserInformationUseCase,
         );
       },
       act: (bloc) => bloc.add(LoginRequested(email: email, password: password)),
@@ -82,7 +86,7 @@ void main() {
       ],
       verify: (_) {
         verify(() => mockLoginUseCase.call(any())).called(1);
-        verifyNever(() => mockSaveSecureStorageUseCase.call(any()));
+        verifyNever(() => mockSaveUserInformationUseCase.call(any()));
       },
     );
 
@@ -94,7 +98,7 @@ void main() {
 
         return LoginBloc(
           loginUseCase: mockLoginUseCase,
-          saveSecureStorageUseCase: mockSaveSecureStorageUseCase,
+          saveUserInformationUseCase: mockSaveUserInformationUseCase,
         );
       },
       act: (bloc) => bloc.add(LoginRequested(email: email, password: password)),
@@ -105,7 +109,7 @@ void main() {
       ],
       verify: (_) {
         verify(() => mockLoginUseCase.call(any())).called(1);
-        verifyNever(() => mockSaveSecureStorageUseCase.call(any()));
+        verifyNever(() => mockSaveUserInformationUseCase.call(any()));
       },
     );
   });

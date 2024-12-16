@@ -7,8 +7,8 @@ class HttpClient implements HttpClientInterface {
   HttpClient({required String baseUrl})
       : _dio = Dio(BaseOptions(
           baseUrl: baseUrl,
-          connectTimeout: const Duration(milliseconds: 5000),
-          receiveTimeout: const Duration(milliseconds: 3000),
+          connectTimeout: const Duration(seconds: 20),
+          receiveTimeout: const Duration(seconds: 10),
         )) {
     _dio.interceptors.add(LogInterceptor(
       request: false,

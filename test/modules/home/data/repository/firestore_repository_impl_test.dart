@@ -4,15 +4,15 @@ import 'package:blog/modules/home/domain/entities/favorite_post.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-class MockFirestoreDatasource extends Mock implements FirestoreDatasource {}
+class MockFavoriteDatasource extends Mock implements FavoriteDatasource {}
 
 void main() {
-  late FirebaseRepositoryImpl repository;
-  late MockFirestoreDatasource mockDatasource;
+  late FavoriteRepositoryImpl repository;
+  late MockFavoriteDatasource mockDatasource;
 
   setUp(() {
-    mockDatasource = MockFirestoreDatasource();
-    repository = FirebaseRepositoryImpl(datasource: mockDatasource);
+    mockDatasource = MockFavoriteDatasource();
+    repository = FavoriteRepositoryImpl(datasource: mockDatasource);
 
     registerFallbackValue(<Map<String, dynamic>>[]);
   });

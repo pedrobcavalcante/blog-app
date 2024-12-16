@@ -1,5 +1,5 @@
 import 'package:blog/modules/home/domain/datasources/remote_datasource.dart';
-import 'package:blog/modules/home/domain/entities/post.dart';
+import 'package:blog/shared/domain/entities/post.dart';
 import 'package:blog/modules/home/domain/usecases/get_posts_usecase.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -20,8 +20,8 @@ void main() {
         'should return a list of Post when the call to the datasource is successful',
         () async {
       final testPosts = [
-        Post(id: 1, title: 'Post 1', body: 'Body 1'),
-        Post(id: 2, title: 'Post 2', body: 'Body 2'),
+        const Post(id: 1, title: 'Post 1', body: 'Body 1'),
+        const Post(id: 2, title: 'Post 2', body: 'Body 2'),
       ];
 
       when(() => mockDataSource.getPosts()).thenAnswer((_) async => testPosts);

@@ -11,3 +11,4 @@ class DeleteTokenUseCase implements UseCase<void, void> {
     await _secureStorageDatasource.deleteToken();
   }
 }
+

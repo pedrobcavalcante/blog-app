@@ -41,6 +41,7 @@ O **Blog App** é uma aplicação criada com **Flutter** para visualização, ge
 - Gerenciamento de estado via **Cubit/Bloc**.
 - Pipeline CI/CD com testes unitários, build do APK e upload automatizado de artefatos.
 - Integração com API falsa (**JSONPlaceholder**) para simulação de endpoints.
+- **Envio de Comentários**: Embora o **JSONPlaceholder** forneça um endpoint para envio de comentários, ele não exibe ou salva as informações enviadas. Para simular a adição de um comentário, o sistema envia a informação ao endpoint e adiciona o comentário localmente, proporcionando a experiência de que o comentário foi efetivamente adicionado, sem a necessidade de persistência no backend.
 
 ---
 
@@ -160,8 +161,6 @@ Com mais tempo e recursos, as seguintes melhorias poderiam ser implementadas no 
 
    - Permitir que novos usuários se registrem diretamente no aplicativo.
 
-3. **Adicionar Comentários:**
-   - Implementar funcionalidade para que os usuários possam adicionar comentários aos posts diretamente pela interface.
 
 Essas melhorias enriqueceriam a experiência do usuário e aumentariam a robustez do projeto.
 

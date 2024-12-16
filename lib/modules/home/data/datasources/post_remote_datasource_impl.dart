@@ -1,7 +1,7 @@
 import 'package:blog/core/network/interface/http_client_interface.dart';
 import 'package:blog/modules/home/domain/datasources/remote_datasource.dart';
-import 'package:blog/modules/home/domain/entities/comments.dart';
-import 'package:blog/modules/home/domain/entities/post.dart';
+import 'package:blog/shared/domain/entities/comments.dart';
+import 'package:blog/shared/domain/entities/post.dart';
 
 class PostRemoteDataSourceImpl implements PostRemoteDataSource {
   final HttpClientInterface client;
@@ -37,6 +37,19 @@ class PostRemoteDataSourceImpl implements PostRemoteDataSource {
       return json.map((comment) => Comment.fromJson(comment)).toList();
     } catch (e) {
       throw Exception('Failed to fetch comments');
+    }
+  }
+
+  @override
+  Future<Comment> addComment(Comment comment) async {
+    try {
+      final response = await client.post(
+        '/comments',
+        data: comment.toJson(),
+      );
+      return Comment.fromJson(response.data);
+    } catch (e) {
+      throw Exception('Failed to add comment');
     }
   }
 }

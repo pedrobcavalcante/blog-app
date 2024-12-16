@@ -1,5 +1,5 @@
 import 'package:blog/modules/home/domain/entities/favorite_state.dart';
-import 'package:blog/modules/home/domain/entities/post.dart';
+import 'package:blog/shared/domain/entities/post.dart';
 import 'package:blog/modules/home/domain/usecases/toggle_favorite_post_usecase.dart';
 import 'package:blog/modules/home/presentation/cubit/favorite_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

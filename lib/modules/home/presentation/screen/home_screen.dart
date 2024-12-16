@@ -66,7 +66,6 @@ class _HomeScreenState extends State<HomeScreen> {
               if (state is HomeLoaded) {
                 return PostList(
                   posts: state.posts,
-                  future: bloc.getComments,
                 );
               }
               return const HomeErrorWidget(message: 'Nenhum post encontrado.');

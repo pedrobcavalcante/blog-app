@@ -1,7 +1,7 @@
 import 'package:blog/modules/home/domain/datasources/remote_datasource.dart';
-import 'package:blog/modules/home/domain/entities/comments.dart';
+import 'package:blog/shared/domain/entities/comments.dart';
 
-import 'package:blog/modules/home/domain/usecases/get_comments_usecas.dart';
+import 'package:blog/modules/post_detail/domain/usecases/get_comments_usecase.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -20,13 +20,13 @@ void main() {
     test('should return a list of comments when call is successful', () async {
       when(() => mockDataSource.getCommentsByPostId(1)).thenAnswer(
         (_) async => [
-          Comment(
+          const Comment(
               postId: 1,
               id: 1,
               name: 'John Doe',
               email: 'john@example.com',
               body: 'Comment body 1'),
-          Comment(
+          const Comment(
               postId: 1,
               id: 2,
               name: 'Jane Doe',

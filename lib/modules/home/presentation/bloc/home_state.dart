@@ -1,4 +1,4 @@
-import 'package:blog/modules/home/domain/entities/post.dart';
+import 'package:blog/shared/domain/entities/post.dart';
 
 abstract class HomeState {}
 

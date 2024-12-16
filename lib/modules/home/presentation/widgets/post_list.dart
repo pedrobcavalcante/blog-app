@@ -1,9 +1,8 @@
-import 'package:blog/modules/home/domain/entities/comments.dart';
-import 'package:blog/modules/home/domain/entities/post.dart';
+import 'package:blog/shared/domain/entities/post.dart';
 import 'package:blog/modules/home/presentation/cubit/favorite_cubit.dart';
 import 'package:blog/modules/home/presentation/cubit/favorite_state.dart';
 import 'package:blog/modules/home/presentation/widgets/favorite_button.dart';
-import 'package:blog/modules/home/presentation/widgets/post_detail.dart';
+import 'package:blog/modules/post_detail/presentation/screen/post_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -11,11 +10,9 @@ import 'package:flutter_modular/flutter_modular.dart';
 class PostList extends StatefulWidget {
   const PostList({
     required this.posts,
-    required this.future,
     super.key,
   });
 
-  final Future<List<Comment>> Function(int) future;
   final List<Post> posts;
 
   @override
@@ -48,22 +45,15 @@ class _PostListState extends State<PostList> {
               padding: const EdgeInsets.all(8),
               itemCount: favorites.length,
               itemBuilder: (context, index) {
-                final post = favorites[index];
+                final favoriteState = favorites[index];
 
                 return GestureDetector(
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => PostDetail(
-                          post: post,
-                          future: widget.future(post.id),
-                        ),
-                      ),
-                    );
+                    Modular.to.pushNamed(PostDetailScreen.routeName,
+                        arguments: favoriteState.toPost());
                   },
                   child: Hero(
-                    tag: 'post-${post.id}',
+                    tag: 'post-${favoriteState.id}',
                     child: Material(
                       color: Colors.transparent,
                       child: Card(
@@ -78,7 +68,7 @@ class _PostListState extends State<PostList> {
                             children: [
                               Expanded(
                                 child: Text(
-                                  post.title,
+                                  favoriteState.title,
                                   style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 18,
@@ -88,14 +78,14 @@ class _PostListState extends State<PostList> {
                                 ),
                               ),
                               FavoriteButton(
-                                isLoading: post.isLoading,
-                                post: post,
+                                isLoading: favoriteState.isLoading,
+                                post: favoriteState,
                                 toggleFavorite: _cubit.toggleFavorite,
                               ),
                             ],
                           ),
                           subtitle: Text(
-                            post.body,
+                            favoriteState.body,
                             style: const TextStyle(fontSize: 14),
                           ),
                           tileColor: const Color(0xFFF5F5F5),

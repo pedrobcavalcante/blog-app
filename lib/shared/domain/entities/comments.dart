@@ -1,16 +1,18 @@
-class Comment {
+import 'package:equatable/equatable.dart';
+
+class Comment extends Equatable {
   final int postId;
-  final int id;
+  final int? id;
   final String name;
   final String email;
   final String body;
 
-  Comment({
+  const Comment({
     required this.postId,
-    required this.id,
     required this.name,
     required this.email,
     required this.body,
+    this.id,
   });
 
   factory Comment.fromJson(Map<String, dynamic> json) {
@@ -22,4 +24,17 @@ class Comment {
       body: json['body'] as String? ?? '',
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'postId': postId,
+      'id': id,
+      'name': name,
+      'email': email,
+      'body': body,
+    };
+  }
+
+  @override
+  List<Object?> get props => [postId, id, name, email, body];
 }

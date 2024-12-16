@@ -1,5 +1,5 @@
 import 'package:blog/modules/home/domain/datasources/remote_datasource.dart';
-import 'package:blog/modules/home/domain/entities/comments.dart';
+import 'package:blog/shared/domain/entities/comments.dart';
 import 'package:blog/core/domain/usecases/usecase.dart';
 
 class GetCommentsUseCase implements UseCase<int, List<Comment>> {

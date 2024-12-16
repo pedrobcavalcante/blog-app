@@ -37,7 +37,7 @@ class MockDocumentSnapshot extends Mock
 }
 
 void main() {
-  late FirestoreDatasourceImpl datasource;
+  late FavoriteDatasourceImpl datasource;
   late MockFirebaseFirestore mockFirestore;
   late MockCollectionReference mockCollection;
   late MockDocumentReference mockDocument;
@@ -45,7 +45,7 @@ void main() {
 
   setUp(() {
     mockFirestore = MockFirebaseFirestore();
-    datasource = FirestoreDatasourceImpl(firestore: mockFirestore);
+    datasource = FavoriteDatasourceImpl(firestore: mockFirestore);
     mockCollection = MockCollectionReference();
     mockDocument = MockDocumentReference();
     mockQuerySnapshot = MockQuerySnapshot();

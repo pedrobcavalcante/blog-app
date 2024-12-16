@@ -1,4 +1,4 @@
-import 'package:blog/modules/home/domain/entities/post.dart';
+import 'package:blog/shared/domain/entities/post.dart';
 import 'package:equatable/equatable.dart';
 
 class FavoriteState extends Post with EquatableMixin {
@@ -30,4 +30,11 @@ class FavoriteState extends Post with EquatableMixin {
       isFavorited: isFavorited ?? this.isFavorited,
     );
   }
+
+  Post toPost() => Post(
+        id: id,
+        title: title,
+        body: body,
+        isFavorited: isFavorited,
+      );
 }

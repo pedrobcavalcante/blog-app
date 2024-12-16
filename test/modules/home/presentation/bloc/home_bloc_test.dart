@@ -1,6 +1,5 @@
-import 'package:blog/modules/home/domain/entities/comments.dart';
-import 'package:blog/modules/home/domain/entities/post.dart';
-import 'package:blog/modules/home/domain/usecases/get_comments_usecas.dart';
+import 'package:blog/shared/domain/entities/post.dart';
+import 'package:blog/modules/post_detail/domain/usecases/get_comments_usecase.dart';
 import 'package:blog/modules/home/domain/usecases/get_posts_with_favorites_usecase.dart';
 import 'package:blog/modules/home/presentation/bloc/home_bloc.dart';
 import 'package:blog/modules/home/presentation/bloc/home_event.dart';
@@ -16,15 +15,13 @@ class MockGetPostsWithFavoritesUseCase extends Mock
 
 void main() {
   late HomeBloc homeBloc;
-  late MockGetCommentsUseCase mockGetCommentsUseCase;
+
   late MockGetPostsWithFavoritesUseCase mockGetPostsWithFavoritesUseCase;
 
   setUp(() {
-    mockGetCommentsUseCase = MockGetCommentsUseCase();
     mockGetPostsWithFavoritesUseCase = MockGetPostsWithFavoritesUseCase();
 
     homeBloc = HomeBloc(
-      getCommentsUseCase: mockGetCommentsUseCase,
       getPostsWithFavoritesUseCase: mockGetPostsWithFavoritesUseCase,
     );
 
@@ -37,22 +34,8 @@ void main() {
 
   group('HomeBloc Tests', () {
     final mockPosts = [
-      Post(id: 1, title: 'Post 1', body: 'Body 1'),
-      Post(id: 2, title: 'Post 2', body: 'Body 2'),
-    ];
-    final mockComments = [
-      Comment(
-          postId: 1,
-          id: 1,
-          name: 'User 1',
-          email: 'email1@test.com',
-          body: 'Comment 1'),
-      Comment(
-          postId: 1,
-          id: 2,
-          name: 'User 2',
-          email: 'email2@test.com',
-          body: 'Comment 2'),
+      const Post(id: 1, title: 'Post 1', body: 'Body 1'),
+      const Post(id: 2, title: 'Post 2', body: 'Body 2'),
     ];
 
     blocTest<HomeBloc, HomeState>(
@@ -88,28 +71,5 @@ void main() {
         verify(() => mockGetPostsWithFavoritesUseCase.call()).called(1);
       },
     );
-
-    test('should return comments when getComments is called successfully',
-        () async {
-      when(() => mockGetCommentsUseCase.call(1))
-          .thenAnswer((_) async => mockComments);
-
-      final result = await homeBloc.getComments(1);
-
-      expect(result, mockComments);
-      verify(() => mockGetCommentsUseCase.call(1)).called(1);
-    });
-
-    test('should throw exception when getComments fails', () async {
-      when(() => mockGetCommentsUseCase.call(1))
-          .thenThrow(Exception('Erro ao carregar os comentários'));
-
-      expect(
-        () async => await homeBloc.getComments(1),
-        throwsA(isA<Exception>()),
-      );
-
-      verify(() => mockGetCommentsUseCase.call(1)).called(1);
-    });
   });
 }
