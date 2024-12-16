@@ -120,6 +120,7 @@ O projeto utiliza **GitHub Actions** para automatizar os seguintes processos:
 - **Testes Unitários**: Validações de código com `flutter test --coverage`.
 - **Build do APK**: Geração do APK com `flutter build apk --release`.
 - **Upload de Artefatos**: Disponibiliza o APK e o relatório de cobertura para download.
+- **Criar Tag e Release no GitHub**: cria uma tag e release no GitHub com a versão do aplicativo e o APK gerado.
 
 ### Acessando Artefatos
 
