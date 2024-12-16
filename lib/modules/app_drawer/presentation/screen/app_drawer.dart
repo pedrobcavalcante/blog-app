@@ -3,13 +3,25 @@
 import 'package:blog/modules/app_drawer/presentation/bloc/drawer_bloc.dart';
 import 'package:blog/modules/app_drawer/presentation/bloc/drawer_event.dart';
 import 'package:blog/modules/app_drawer/presentation/bloc/drawer_state.dart';
+
 import 'package:blog/modules/login/presentation/screen/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
-class AppDrawer extends StatelessWidget {
+class AppDrawer extends StatefulWidget {
   const AppDrawer({super.key});
+
+  @override
+  State<AppDrawer> createState() => _AppDrawerState();
+}
+
+class _AppDrawerState extends State<AppDrawer> {
+  @override
+  void dispose() {
+    Modular.dispose<DrawerBloc>();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,9 +54,10 @@ class AppDrawer extends StatelessWidget {
               ),
               const Spacer(),
               BlocConsumer<DrawerBloc, DrawerState>(
-                listener: (context, state) async {
+                listener: (context, state) {
                   if (state is DeleteTokenSuccess) {
-                    await Modular.to.pushNamed(LoginScreen.routeName);
+                    Modular.to.pushNamedAndRemoveUntil(
+                        LoginScreen.routeName, (_) => false);
                   }
                   if (state is DeleteTokenFailure) {
                     Scaffold.of(context).closeDrawer();
