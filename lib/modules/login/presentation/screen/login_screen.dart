@@ -103,7 +103,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             BlocConsumer<LoginBloc, LoginState>(
                               listener: (context, state) {
                                 if (state is LoginSuccess) {
-                                  Modular.to.pushNamed(HomeScreen.routeName);
+                                  Modular.to.pushReplacementNamed(HomeScreen.routeName);
                                 }
                               },
                               builder: (context, state) {
