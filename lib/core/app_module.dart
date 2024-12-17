@@ -32,6 +32,7 @@ import 'package:blog/modules/login/domain/usecase/save_username_usecase.dart';
 import 'package:blog/modules/login/presentation/bloc/login_bloc.dart';
 import 'package:blog/modules/login/presentation/screen/login_screen.dart';
 import 'package:blog/modules/post_detail/presentation/screen/post_detail_screen.dart';
+import 'package:blog/modules/register/domain/usecases/create_user_with_email_and_password_usecase.dart';
 import 'package:blog/modules/register/presentation/bloc/register_bloc.dart';
 import 'package:blog/modules/register/presentation/screen/register_screen.dart';
 import 'package:blog/shared/data/datasource/data_storage_datasource.dart';
@@ -39,7 +40,7 @@ import 'package:blog/shared/domain/datasource/simples_storage_datasource.dart';
 import 'package:blog/shared/domain/usecases/get_secure_storage_usecase.dart';
 import 'package:blog/modules/splash/presentation/bloc/splash_bloc.dart';
 import 'package:blog/modules/splash/presentation/screen/splash_screen.dart';
-import 'package:blog/shared/data/datasource/firebase_auth_datasource.dart';
+import 'package:blog/shared/data/datasource/firebase_auth_datasource_impl.dart';
 import 'package:blog/shared/data/datasource/secure_storage_datasource.dart';
 import 'package:blog/shared/domain/datasource/firebase_auth_datasource.dart';
 import 'package:blog/shared/domain/datasource/secure_storage_datasource.dart';
@@ -126,6 +127,8 @@ class AppModule extends Module {
             saveEmailUseCase: i(),
             saveSecureStorageUseCase: i(),
             saveUsernameUseCase: i()));
+    i.addLazySingleton<CreateUserWithEmailAndPasswordUseCase>(
+        () => CreateUserWithEmailAndPasswordUseCase(i()));
 
     // Cubits
     i.addLazySingleton<FavoriteCubit>(() => FavoriteCubit(i()));
@@ -143,7 +146,7 @@ class AppModule extends Module {
       () => LoginBloc(loginUseCase: i(), saveUserInformationUseCase: i()),
     );
     i.addLazySingleton<RegisterBloc>(
-      () => RegisterBloc(),
+      () => RegisterBloc(createUserUseCase: i()),
     );
     i.addLazySingleton<SplashBloc>(
         () => SplashBloc(getSecureStorageUseCase: i()));

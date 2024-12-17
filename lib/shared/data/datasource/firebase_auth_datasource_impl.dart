@@ -14,4 +14,15 @@ class FirebaseAuthDatasourceImpl implements FirebaseAuthDatasource {
       password: password,
     );
   }
+
+  @override
+  Future<UserCredential?> createUserWithEmailAndPassword(
+    String email,
+    String password,
+  ) async {
+    return firebaseAuth.createUserWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+  }
 }

@@ -1,22 +1,33 @@
+import 'package:blog/modules/register/domain/usecases/create_user_with_email_and_password_usecase.dart';
 import 'package:blog/modules/register/presentation/bloc/register_event.dart';
 import 'package:blog/modules/register/presentation/bloc/register_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
-  RegisterBloc() : super(RegisterInitial()) {
+  final CreateUserWithEmailAndPasswordUseCase createUserUseCase;
+
+  RegisterBloc({required this.createUserUseCase}) : super(RegisterInitial()) {
     on<RegisterRequested>((event, emit) async {
       emit(RegisterInProgress());
-      // Simulação de espera (chamada ao usecase para registrar)
-      await Future.delayed(const Duration(seconds: 2));
 
-      // Exemplo de validação simples
+      if (event.email.isEmpty || event.password.isEmpty) {
+        emit(const RegisterFailure('Preencha email e senha corretamente.'));
+        return;
+      }
+
       if (event.password != event.confirmPassword) {
         emit(const RegisterFailure('As senhas não coincidem.'));
-      } else if (event.email.isEmpty || event.password.isEmpty) {
-        emit(const RegisterFailure('Preencha todos os campos corretamente.'));
-      } else {
-        // Supondo sucesso
+        return;
+      }
+
+      try {
+        await createUserUseCase(Params(
+          email: event.email,
+          password: event.password,
+        ));
         emit(RegisterSuccess());
+      } catch (e) {
+        emit(RegisterFailure(e.toString()));
       }
     });
   }

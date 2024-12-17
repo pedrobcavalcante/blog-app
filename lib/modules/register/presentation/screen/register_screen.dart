@@ -1,4 +1,3 @@
-import 'package:blog/modules/home/presentation/screen/home_screen.dart';
 import 'package:blog/modules/register/presentation/bloc/register_bloc.dart';
 import 'package:blog/modules/register/presentation/bloc/register_event.dart';
 import 'package:blog/modules/register/presentation/bloc/register_state.dart';
@@ -39,6 +38,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
     super.dispose();
   }
 
+  void _showSuccessSnackBar(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Conta criada com sucesso!'),
+        backgroundColor: Colors.green,
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -47,7 +56,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
         backgroundColor: Colors.blue,
         body: Column(
           children: [
-            // Barra superior com botão de voltar
             SafeArea(
               child: Padding(
                 padding:
@@ -65,7 +73,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
               ),
             ),
-
             Container(
               width: double.infinity,
               height: MediaQuery.of(context).size.height * 0.2,
@@ -150,7 +157,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             BlocConsumer<RegisterBloc, RegisterState>(
                               listener: (context, state) {
                                 if (state is RegisterSuccess) {
-                                  Modular.to.pushNamed(HomeScreen.routeName);
+                                  _showSuccessSnackBar(context);
+
+                                  Modular.to.pop();
                                 }
                               },
                               builder: (context, state) {
