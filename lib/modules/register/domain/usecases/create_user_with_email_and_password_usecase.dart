@@ -1,12 +1,16 @@
 import 'package:blog/core/domain/usecases/usecase.dart';
 import 'package:blog/shared/domain/datasource/firebase_auth_datasource.dart';
+import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class Params {
+class Params extends Equatable {
   final String email;
   final String password;
 
   const Params({required this.email, required this.password});
+
+  @override
+  List<Object?> get props => [email, password];
 }
 
 class CreateUserWithEmailAndPasswordUseCase
