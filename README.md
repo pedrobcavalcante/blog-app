@@ -13,7 +13,7 @@ O **Blog App** é uma aplicação criada com **Flutter** para visualização, ge
   - [Pré-requisitos](#pré-requisitos)
   - [Variáveis Sensíveis](#variáveis-sensíveis)
 - [Execução do Projeto](#execução-do-projeto)
-- [Pipeline CI/CD](#pipeline-ci/cd)
+- [Pipeline CI/CD](#pipeline-cicd)
 - [Testes Unitários](#testes-unitários)
 - [Possíveis Melhorias](#possíveis-melhorias)
 
@@ -34,13 +34,13 @@ O **Blog App** é uma aplicação criada com **Flutter** para visualização, ge
 
 ## Recursos Principais
 
-- Listagem de posts com navegação modular.
-- Visualização detalhada de posts e seus comentários.
-- Autenticação de usuário via **Firebase**.
-- Posts favoritos salvos no **Firestore** vinculados ao usuário autenticado.
-- Gerenciamento de estado via **Cubit/Bloc**.
-- Pipeline CI/CD com testes unitários, build do APK e upload automatizado de artefatos.
-- Integração com API falsa (**JSONPlaceholder**) para simulação de endpoints.
+- **Tela de Login**: Autenticação de usuários via Firebase.
+- **Tela de Registro**: Criação de novos usuários diretamente no app (funcional).
+- **Listagem de Posts**: Visualização de posts com navegação modular.
+- **Detalhes de Posts e Comentários**: Exibição detalhada e interação com comentários.
+- **Gerenciamento de Estado** via **Cubit/Bloc**.
+- **Posts Favoritos Salvos no Firestore**: Cada usuário autenticado pode manter sua lista de favoritos.
+- **Integração com JSONPlaceholder** para simulação de endpoints.
 - **Envio de Comentários**: Embora o **JSONPlaceholder** forneça um endpoint para envio de comentários, ele não exibe ou salva as informações enviadas. Para simular a adição de um comentário, o sistema envia a informação ao endpoint e adiciona o comentário localmente, proporcionando a experiência de que o comentário foi efetivamente adicionado, sem a necessidade de persistência no backend.
 
 ---
@@ -50,13 +50,10 @@ O **Blog App** é uma aplicação criada com **Flutter** para visualização, ge
 ```plaintext
 blog/
 │
-│
 ├── lib/                    # Código principal do Flutter
 │   ├── core/               # Funcionalidades essenciais e configuração global
-│   │
-│   ├── modules/            # Módulos principais
-│   │
-│   ├── shared/             # Recursos compartilhados (ex: use cases, datasources)
+│   ├── modules/            # Módulos principais (login, registro, home, etc.)
+│   ├── shared/             # Recursos compartilhados (ex: use cases, datasources, widgets)
 │
 ├── test/                   # Testes unitários
 ├── pubspec.yaml            # Gerenciamento de dependências
@@ -156,11 +153,6 @@ Com mais tempo e recursos, as seguintes melhorias poderiam ser implementadas no 
 1. **Cobertura de Testes Adicionais:**
 
    - Testar as camadas de **Screen** e **Widgets** para maior confiabilidade.
-
-2. **Tela de Criação de Usuário:**
-
-   - Permitir que novos usuários se registrem diretamente no aplicativo.
-
 
 Essas melhorias enriqueceriam a experiência do usuário e aumentariam a robustez do projeto.
 

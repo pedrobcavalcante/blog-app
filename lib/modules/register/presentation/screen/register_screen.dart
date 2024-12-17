@@ -1,48 +1,85 @@
-import 'package:blog/modules/login/presentation/bloc/login_bloc.dart';
-import 'package:blog/modules/login/presentation/bloc/login_event.dart';
-import 'package:blog/modules/login/presentation/bloc/login_state.dart';
+import 'package:blog/modules/register/presentation/bloc/register_bloc.dart';
+import 'package:blog/modules/register/presentation/bloc/register_event.dart';
+import 'package:blog/modules/register/presentation/bloc/register_state.dart';
 import 'package:blog/shared/presentation/widgets/blog_button.dart';
 import 'package:blog/shared/presentation/widgets/blog_text_field.dart';
-import 'package:blog/modules/register/presentation/screen/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:blog/modules/home/presentation/screen/home_screen.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
-  static const routeName = '/login';
+class RegisterScreen extends StatefulWidget {
+  static const routeName = '/register';
+
+  const RegisterScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _RegisterScreenState extends State<RegisterScreen> {
+  final formKey = GlobalKey<FormState>();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
+  late RegisterBloc bloc;
+
+  @override
+  void initState() {
+    super.initState();
+    bloc = Modular.get<RegisterBloc>();
+  }
+
   @override
   void dispose() {
-    Modular.dispose<LoginBloc>();
+    emailController.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
+    Modular.dispose<RegisterBloc>();
     super.dispose();
+  }
+
+  void _showSuccessSnackBar(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Conta criada com sucesso!'),
+        backgroundColor: Colors.green,
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    final formKey = GlobalKey<FormState>();
-    final emailController = TextEditingController(text: 'teste@email.com');
-    final passwordController = TextEditingController(text: '12345678');
-    final bloc = Modular.get<LoginBloc>();
     return BlocProvider(
       create: (context) => bloc,
       child: Scaffold(
         backgroundColor: Colors.blue,
         body: Column(
           children: [
+            SafeArea(
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.arrow_back, color: Colors.white),
+                      onPressed: () {
+                        Modular.to.pop();
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ),
             Container(
               width: double.infinity,
-              height: MediaQuery.of(context).size.height * 0.4,
-              padding: const EdgeInsets.symmetric(vertical: 30),
+              height: MediaQuery.of(context).size.height * 0.2,
+              padding: const EdgeInsets.symmetric(vertical: 10),
               child: const Center(
                 child: Text(
-                  'Blog App',
+                  'Crie sua conta',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.white,
@@ -77,9 +114,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         key: formKey,
                         child: Column(
                           children: [
+                            const SizedBox(height: 20),
                             BlogTextField(
                               controller: emailController,
                               hintText: "E-mail",
+                              isPassword: false,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Por favor, insira seu email';
@@ -89,71 +128,74 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             const SizedBox(height: 20),
                             BlogTextField(
-                              hintText: "Senha",
                               controller: passwordController,
+                              hintText: "Senha",
                               isPassword: true,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Por favor, insira sua senha';
                                 }
+                                if (value.length < 6) {
+                                  return 'A senha deve ter pelo menos 6 caracteres';
+                                }
                                 return null;
                               },
                             ),
                             const SizedBox(height: 20),
-                            BlocConsumer<LoginBloc, LoginState>(
+                            BlogTextField(
+                              controller: confirmPasswordController,
+                              hintText: "Confirmar Senha",
+                              isPassword: true,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Por favor, confirme sua senha';
+                                }
+                                return null;
+                              },
+                            ),
+                            const SizedBox(height: 20),
+                            BlocConsumer<RegisterBloc, RegisterState>(
                               listener: (context, state) {
-                                if (state is LoginSuccess) {
-                                  Modular.to.pushReplacementNamed(HomeScreen.routeName);
+                                if (state is RegisterSuccess) {
+                                  _showSuccessSnackBar(context);
+
+                                  Modular.to.pop();
                                 }
                               },
                               builder: (context, state) {
-                                if (state is LoginInProgress) {
+                                if (state is RegisterInProgress) {
                                   return const CircularProgressIndicator();
                                 }
                                 return Column(
                                   children: [
                                     BlogButton(
-                                      text: "Login",
+                                      text: "Registrar",
                                       onPressed: () {
                                         if (formKey.currentState!.validate()) {
                                           bloc.add(
-                                            LoginRequested(
+                                            RegisterRequested(
                                               email: emailController.text,
                                               password: passwordController.text,
+                                              confirmPassword:
+                                                  confirmPasswordController
+                                                      .text,
                                             ),
                                           );
                                         }
                                       },
                                     ),
-                                    state is LoginFailure
-                                        ? Padding(
-                                            padding:
-                                                const EdgeInsets.only(top: 20),
-                                            child: Text(
-                                              state.errorMessage,
-                                              style: const TextStyle(
-                                                color: Colors.red,
-                                                fontSize: 16,
-                                              ),
-                                              textAlign: TextAlign.center,
-                                            ),
-                                          )
-                                        : const SizedBox(),
-                                    const SizedBox(height: 40),
-                                    TextButton(
-                                      onPressed: () {
-                                        Modular.to.pushNamed(
-                                            RegisterScreen.routeName);
-                                      },
-                                      child: const Text(
-                                        'Ainda não possui uma conta? Registre-se',
-                                        style: TextStyle(
-                                          color: Colors.blue,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
+                                    if (state is RegisterFailure)
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 20),
+                                        child: Text(
+                                          state.errorMessage,
+                                          style: const TextStyle(
+                                            color: Colors.red,
+                                            fontSize: 16,
+                                          ),
+                                          textAlign: TextAlign.center,
                                         ),
                                       ),
-                                    ),
                                   ],
                                 );
                               },

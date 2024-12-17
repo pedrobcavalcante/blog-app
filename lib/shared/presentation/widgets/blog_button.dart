@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
-class LoginButton extends StatelessWidget {
-  const LoginButton({
+class BlogButton extends StatelessWidget {
+  const BlogButton({
     super.key,
+    required this.text,
     required this.onPressed,
   });
-
+  final String text;
   final VoidCallback onPressed;
 
   @override
@@ -19,9 +20,9 @@ class LoginButton extends StatelessWidget {
         ),
         backgroundColor: Colors.blue,
       ),
-      child: const Text(
-        'Login',
-        style: TextStyle(color: Colors.white),
+      child: Text(
+        text,
+        style: const TextStyle(color: Colors.white),
       ),
     );
   }
