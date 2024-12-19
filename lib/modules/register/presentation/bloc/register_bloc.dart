@@ -27,7 +27,9 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
         ));
         emit(RegisterSuccess());
       } catch (e) {
-        emit(RegisterFailure(e.toString()));
+        String errorMessage = e.toString().replaceAll(RegExp(r'\[.*?\]'), '');
+
+        emit(RegisterFailure(errorMessage));
       }
     });
   }

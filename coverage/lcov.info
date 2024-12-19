@@ -1,4 +1,4 @@
-SF:lib\modules\app_drawer\domain\usecases\delete_email_usecase.dart
+SF:lib\modules\app_drawer\domain\usecases\delete_token_usecase.dart
 DA:7,1
 DA:9,1
 DA:11,2
@@ -6,7 +6,7 @@ LF:3
 LH:3
 end_of_record
 SF:lib\modules\register\domain\usecases\create_user_with_email_and_password_usecase.dart
-DA:10,2
+DA:10,3
 DA:12,1
 DA:13,3
 DA:20,1
@@ -53,7 +53,7 @@ DA:22,2
 LF:6
 LH:6
 end_of_record
-SF:lib\modules\app_drawer\domain\usecases\delete_token_usecase.dart
+SF:lib\modules\app_drawer\domain\usecases\delete_email_usecase.dart
 DA:7,1
 DA:9,1
 DA:11,2

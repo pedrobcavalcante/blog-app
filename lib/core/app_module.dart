@@ -7,9 +7,9 @@ import 'package:blog/modules/app_drawer/domain/usecases/delete_token_usecase.dar
 import 'package:blog/modules/app_drawer/domain/usecases/delete_user_data_usecase.dart';
 import 'package:blog/modules/app_drawer/domain/usecases/delete_user_name_usecase.dart';
 import 'package:blog/modules/app_drawer/presentation/bloc/drawer_bloc.dart';
-import 'package:blog/modules/home/data/datasources/firestore_datasource_impl.dart';
+import 'package:blog/modules/home/data/datasources/favorite_datasource_impl.dart';
 import 'package:blog/modules/home/data/datasources/post_remote_datasource_impl.dart';
-import 'package:blog/modules/home/data/repository/firestore_repository_impl.dart';
+import 'package:blog/modules/home/data/repository/favorite_repository_impl.dart';
 import 'package:blog/modules/home/domain/datasources/firestore_datasource.dart';
 import 'package:blog/modules/home/domain/datasources/remote_datasource.dart';
 import 'package:blog/modules/home/domain/repository/firebase_repository.dart';
@@ -35,13 +35,13 @@ import 'package:blog/modules/post_detail/presentation/screen/post_detail_screen.
 import 'package:blog/modules/register/domain/usecases/create_user_with_email_and_password_usecase.dart';
 import 'package:blog/modules/register/presentation/bloc/register_bloc.dart';
 import 'package:blog/modules/register/presentation/screen/register_screen.dart';
-import 'package:blog/shared/data/datasource/data_storage_datasource.dart';
+import 'package:blog/shared/data/datasource/data_storage_datasource_impl.dart';
 import 'package:blog/shared/domain/datasource/simples_storage_datasource.dart';
 import 'package:blog/shared/domain/usecases/get_secure_storage_usecase.dart';
 import 'package:blog/modules/splash/presentation/bloc/splash_bloc.dart';
 import 'package:blog/modules/splash/presentation/screen/splash_screen.dart';
 import 'package:blog/shared/data/datasource/firebase_auth_datasource_impl.dart';
-import 'package:blog/shared/data/datasource/secure_storage_datasource.dart';
+import 'package:blog/shared/data/datasource/secure_storage_datasource_impl.dart';
 import 'package:blog/shared/domain/datasource/firebase_auth_datasource.dart';
 import 'package:blog/shared/domain/datasource/secure_storage_datasource.dart';
 import 'package:blog/shared/domain/usecases/get_user_email_usecase.dart';

@@ -1,4 +1,4 @@
-import 'package:blog/modules/home/data/repository/firestore_repository_impl.dart';
+import 'package:blog/modules/home/data/repository/favorite_repository_impl.dart';
 import 'package:blog/modules/home/domain/datasources/firestore_datasource.dart';
 import 'package:blog/modules/home/domain/entities/favorite_post.dart';
 import 'package:flutter_test/flutter_test.dart';

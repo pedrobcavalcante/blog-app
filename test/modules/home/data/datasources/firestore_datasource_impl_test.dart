@@ -1,6 +1,6 @@
 // ignore_for_file: subtype_of_sealed_class
 
-import 'package:blog/modules/home/data/datasources/firestore_datasource_impl.dart';
+import 'package:blog/modules/home/data/datasources/favorite_datasource_impl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
